@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="?attr/listPreferredItemHeight"
+    android:padding="20dp"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Socket01"
+        android:id="@+id/tv_nombre"
+        android:textAppearance="?attr/textAppearanceListItem"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="32312"
+        android:id="@+id/tv_id"
+        android:paddingLeft="10dp"
+        android:layout_below="@+id/tv_nombre"
+        android:layout_alignLeft="@+id/tv_nombre"
+        />
+
+</RelativeLayout>

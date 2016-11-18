@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">MiPruebaThingSpeakWeb</string>
+    <string name="ver_valores">Ver valores</string>
+    <string name="ingresar_latitud">ingrese latitud</string>
+    <string name="ingresar_longitud">ingrese longitud</string>
+    <string name="enviar_valor">Enviar valor</string>
+    <string name="longitude">longitud</string>
+    <string name="latitude">latitud</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
