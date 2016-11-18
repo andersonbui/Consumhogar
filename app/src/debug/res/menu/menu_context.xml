@@ -4,7 +4,7 @@
     >
 
 	<item
-		android:id="@+id/menu_item_Aceptar"
+		android:id="@+id/btn_Aceptar"
 		android:title="Aceptar"
 		android:icon="@drawable/ic_done"
 		android:orderInCategory="1"

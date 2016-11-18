@@ -7,9 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
-import com.andersonbuitron.mipruebathingspeakweb.fragments.CanalesFragment;
+import com.andersonbuitron.mipruebathingspeakweb.fragments.NoregistradosFragment;
 
-public class MainActivity extends AppCompatActivity implements CanalesFragment.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements NoregistradosFragment.OnFragmentInteractionListener{
 
     TextView tvTexto;
     @Override
@@ -19,11 +19,11 @@ public class MainActivity extends AppCompatActivity implements CanalesFragment.O
 
         // Agregar fragmento
         FragmentManager fragmentManager = getSupportFragmentManager();
-        CanalesFragment canalesFragment = (CanalesFragment) fragmentManager.findFragmentById(R.id.fragment_canales_list);
-        if(canalesFragment == null){
-            canalesFragment = CanalesFragment.newInstance();
+        NoregistradosFragment noregistradosFragment = (NoregistradosFragment) fragmentManager.findFragmentById(R.id.fragment_canales_list);
+        if(noregistradosFragment == null){
+            noregistradosFragment = NoregistradosFragment.newInstance();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.contenedor,canalesFragment)
+                    .replace(R.id.contenedor, noregistradosFragment)
                     .commit();
         }
     }

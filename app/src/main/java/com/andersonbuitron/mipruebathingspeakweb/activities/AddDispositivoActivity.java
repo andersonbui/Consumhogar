@@ -25,7 +25,7 @@ public class AddDispositivoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_socket);
+        setContentView(R.layout.activity_add_dispositivo);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Agregar Socket");

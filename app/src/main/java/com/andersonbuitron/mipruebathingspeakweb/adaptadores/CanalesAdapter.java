@@ -45,7 +45,7 @@ public class CanalesAdapter extends ArrayAdapter<Canal>{
         if(null == convertView){
             //si no existe, entonces inflarlo con el image_list_view.xml
             //ligar layout al adaptador
-            convertView = inflater.inflate(R.layout.template_list_item_canal,
+            convertView = inflater.inflate(R.layout.template_list_item_noregistrados,
                     parent,
                     false);
             holder = new ViewHolder();

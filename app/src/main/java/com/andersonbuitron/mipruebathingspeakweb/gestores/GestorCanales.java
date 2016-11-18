@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.andersonbuitron.mipruebathingspeakweb.adaptadores.CanalesAdapter;
 import com.andersonbuitron.mipruebathingspeakweb.callbacks.TareaUrl;
+import com.andersonbuitron.mipruebathingspeakweb.database.BDCanal;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Canal;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -64,15 +65,25 @@ public class GestorCanales {
      */
     private Canal parseCanal(JSONObject objeto) {
 
-        String id = null;
-        String nombre = null;
+        String id = "";
+        String nombre = "";
+        String api_key_write = "";
         try {
             id = objeto.getString("id");
             nombre = objeto.getString("name");
+            JSONArray array_api_keys = objeto.getJSONArray("api_keys");
+            //Toast.makeText(context, "objeto json: "+array_api_keys.toString(), Toast.LENGTH_LONG).show();
+            for (int i = 0; i < array_api_keys.length(); i++) {
+                if(array_api_keys.getJSONObject(i).getBoolean("write_flag")){
+                    api_key_write = array_api_keys.getJSONObject(i).getString("api_key");
+                    break;
+                }
+            }
         } catch (JSONException e) {
+            e.printStackTrace();
             Toast.makeText(context, "objeto JSON no valido", Toast.LENGTH_SHORT).show();
         }
-        Canal canal = new Canal(id, nombre);
+        Canal canal = new Canal(id, nombre,api_key_write);
         return canal;
     }
 
@@ -139,6 +150,9 @@ public class GestorCanales {
 
     private ArrayList<Canal> fitrarCanales(ArrayList<Canal> canales) {
         //TODO
+        BDCanal bdCanal = new BDCanal(context);
+        List<Canal> list_canales = bdCanal.leerCanales();
+        canales.removeAll(list_canales);
 
         return canales;
     }
