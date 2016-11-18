@@ -1,4 +1,4 @@
-package com.andersonbuitron.mipruebathingspeakweb;
+package com.andersonbuitron.mipruebathingspeakweb.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.andersonbuitron.mipruebathingspeakweb.activities.AddDispositivoActivity;
+import com.andersonbuitron.mipruebathingspeakweb.R;
 import com.andersonbuitron.mipruebathingspeakweb.adaptadores.CanalesAdapter;
-import com.andersonbuitron.mipruebathingspeakweb.adaptadores.GestorCanales;
+import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorCanales;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Canal;
 
 import java.util.ArrayList;
@@ -24,31 +26,21 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CanalesFragment.OnFragmentInteractionListener} interface
+ * {@link NoregistradosFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CanalesFragment#newInstance} factory method to
+ * Use the {@link NoregistradosFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CanalesFragment extends Fragment {
+public class NoregistradosFragment extends Fragment {
 
     //ista de elementos
     ListView vCanalesList;
     ArrayAdapter mCanalesAdapter;
     List<Canal> list_canales;
 
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
-    public CanalesFragment() {
+    public NoregistradosFragment() {
         // Required empty public constructor
     }
 
@@ -56,16 +48,12 @@ public class CanalesFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CanalesFragment.
+     * @return A new instance of fragment NoregistradosFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CanalesFragment newInstance(String param1, String param2) {
-        CanalesFragment fragment = new CanalesFragment();
+    public static NoregistradosFragment newInstance() {
+        NoregistradosFragment fragment = new NoregistradosFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
 
         return fragment;
@@ -74,26 +62,21 @@ public class CanalesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
         getActivity().setTitle("Sockets disponibles");
         list_canales = new ArrayList<>();
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i("Informe","entro en onCreateView");
-        View root = inflater.inflate(R.layout.fragment_canales, container, false);
+        View root = inflater.inflate(R.layout.fragment_noregistrados, container, false);
 
         //instancia del listView
         vCanalesList = (ListView) root.findViewById(R.id.canales_list);
 
         //inicializa el adaptador con la fuente de datos
         mCanalesAdapter = new CanalesAdapter(getActivity(),list_canales);
-        GestorCanales.getInstance().recuperarCanales(mCanalesAdapter);
+        GestorCanales.getInstance(getContext()).recuperarCanales(mCanalesAdapter);
 
         //relacionando la lista con el adaptador
         vCanalesList.setAdapter(mCanalesAdapter);
@@ -106,8 +89,8 @@ public class CanalesFragment extends Fragment {
                 Canal canalClickeado = (Canal) mCanalesAdapter.getItem(position);
                 Toast.makeText(getActivity(), "Agregando socket:\n "+canalClickeado.getNombre(), Toast.LENGTH_SHORT).show();
                 //view.setSelected(true);
-                Intent intent = new Intent(getActivity(),AddSocketActivity.class);
-                intent.putExtra("idCanal",canalClickeado.getId());
+                Intent intent = new Intent(getActivity(),AddDispositivoActivity.class);
+                intent.putExtra("canal_clickeado",canalClickeado);
                 startActivity(intent);
             }
         });
@@ -153,5 +136,7 @@ public class CanalesFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 
 }
