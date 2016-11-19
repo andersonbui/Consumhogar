@@ -8,12 +8,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.widget.Toast;
 
-import com.andersonbuitron.mipruebathingspeakweb.modelos.Canal;
+import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
 
 import java.util.ArrayList;
 
 /**
- * para el crud de Canal
+ * para el crud de Dispositivo
  */
 
 public class BDCanal {
@@ -28,20 +28,20 @@ public class BDCanal {
         this.context = context;
     }
 
-    public void insertCanal(Canal canal) {
+    public void insertCanal(Dispositivo dispositivo) {
 
         //compile the statement and start a transaction
         ContentValues valores = new ContentValues();
         mDatabase.beginTransaction();
 
-        if (!canal.getId().equals("")) {
-            valores.put(CanalHelper.DatosTabla.COLUMNA_ID, canal.getId());
-            valores.put(CanalHelper.DatosTabla.COLUMNA_NOMBRE,canal.getNombre());
-            valores.put(CanalHelper.DatosTabla.COLUMNA_API_KEY, canal.getApi_key_write());
-            valores.put(CanalHelper.DatosTabla.COLUMNA_ICONO,canal.getIcono());
+        if (!dispositivo.getId().equals("")) {
+            valores.put(CanalHelper.DatosTabla.COLUMNA_ID, dispositivo.getId());
+            valores.put(CanalHelper.DatosTabla.COLUMNA_NOMBRE, dispositivo.getNombre());
+            valores.put(CanalHelper.DatosTabla.COLUMNA_API_KEY, dispositivo.getApi_key_write());
+            valores.put(CanalHelper.DatosTabla.COLUMNA_ICONO, dispositivo.getIcono());
 
             Long newRow = mDatabase.insert(CanalHelper.DatosTabla.NOMBRE_TABLA, null, valores);
-            Toast.makeText(context, "Se guardo el dato" + newRow, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Se guardo el dato" + dispositivo.toString(), Toast.LENGTH_LONG).show();
         }else {
             Toast.makeText(context, "el Id es obligatorio.", Toast.LENGTH_SHORT).show();
         }
@@ -51,8 +51,8 @@ public class BDCanal {
         mDatabase.endTransaction();
     }
 
-    public ArrayList<Canal> leerCanales() {
-        ArrayList<Canal> listCanal = new ArrayList<>();
+    public ArrayList<Dispositivo> leerCanales() {
+        ArrayList<Dispositivo> listDispositivo = new ArrayList<>();
 
         //get a list of columns to be retrieved, we need all of them
         String[] columns = {
@@ -65,23 +65,23 @@ public class BDCanal {
         if (cursor != null && cursor.moveToFirst()) {
             do {
 
-                //create a new Canal object and retrieve the data from the cursor to be stored in this Canal object
-                Canal Canal = new Canal();
+                //create a new Dispositivo object and retrieve the data from the cursor to be stored in this Dispositivo object
+                Dispositivo Dispositivo = new Dispositivo();
                 //each step is a 2 part process, find the index of the column first, find the data of that column using
-                //that index and finally set our blank Canal object to contain our data
-                Canal.setId(cursor.getString(cursor.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_ID)));
-                Canal.setNombre(cursor.getString(cursor.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_NOMBRE)));
-                Canal.setApi_key_write(cursor.getString(cursor.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_API_KEY)));
-                Canal.setIcono(cursor.getString(cursor.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_ICONO)));
-                //add the Canal to the list of Canal objects which we plan to return
-                listCanal.add(Canal);
+                //that index and finally set our blank Dispositivo object to contain our data
+                Dispositivo.setId(cursor.getString(cursor.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_ID)));
+                Dispositivo.setNombre(cursor.getString(cursor.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_NOMBRE)));
+                Dispositivo.setApi_key_write(cursor.getString(cursor.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_API_KEY)));
+                Dispositivo.setIcono(cursor.getString(cursor.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_ICONO)));
+                //add the Dispositivo to the list of Dispositivo objects which we plan to return
+                listDispositivo.add(Dispositivo);
             }
             while (cursor.moveToNext());
         }
-        return listCanal;
+        return listDispositivo;
     }
 
-    public Canal buscarCanal(String id){
+    public Dispositivo buscarCanal(String id){
 
         String[] projection = {
                 CanalHelper.DatosTabla.COLUMNA_ID,
@@ -94,36 +94,36 @@ public class BDCanal {
 
         // How you want the results sorted in the resulting Cursor
         String sortOrder = CanalHelper.DatosTabla.COLUMNA_NOMBRE + " DESC";
-        Canal canal = null;
+        Dispositivo dispositivo = null;
         try {
             Cursor c = mDatabase.query(CanalHelper.DatosTabla.NOMBRE_TABLA, projection, selection, selectionArgs, null, null, sortOrder);
 
-            canal =  new Canal();
+            dispositivo =  new Dispositivo();
             c.moveToFirst();
-            canal.setId(c.getString(c.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_ID)));
-            canal.setIcono(c.getString(c.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_NOMBRE)));
-            canal.setApi_key_write(c.getString(c.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_API_KEY)));
-            canal.setIcono(c.getString(c.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_ICONO)));
+            dispositivo.setId(c.getString(c.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_ID)));
+            dispositivo.setIcono(c.getString(c.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_NOMBRE)));
+            dispositivo.setApi_key_write(c.getString(c.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_API_KEY)));
+            dispositivo.setIcono(c.getString(c.getColumnIndex(CanalHelper.DatosTabla.COLUMNA_ICONO)));
 
         } catch (android.database.CursorIndexOutOfBoundsException e) {
             Toast.makeText(context, "No se encontro registro alguno.", Toast.LENGTH_LONG).show();
         }
 
-        return canal;
+        return dispositivo;
     }
 
-    public void actualizarCanal(Canal canal){
+    public void actualizarCanal(Dispositivo dispositivo){
         ContentValues valores = new ContentValues();
-        valores.put(CanalHelper.DatosTabla.COLUMNA_NOMBRE,canal.getNombre());
-        valores.put(CanalHelper.DatosTabla.COLUMNA_ICONO,canal.getIcono());
+        valores.put(CanalHelper.DatosTabla.COLUMNA_NOMBRE, dispositivo.getNombre());
+        valores.put(CanalHelper.DatosTabla.COLUMNA_ICONO, dispositivo.getIcono());
 
         String selection = CanalHelper.DatosTabla.COLUMNA_ID + "=?";
-        String[] selectionArgs = {canal.getId()};
+        String[] selectionArgs = {dispositivo.getId()};
 
         int res = mDatabase.update(CanalHelper.DatosTabla.NOMBRE_TABLA,valores,selection,selectionArgs);
 
         if(res > 0){
-            Toast.makeText(context, "Se actualizo el canal con id["+canal.getId()+"]", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Se actualizo el dispositivo con id["+ dispositivo.getId()+"]", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(context,"No se actualizo ningun registro: ",Toast.LENGTH_LONG).show();
         }
@@ -162,7 +162,7 @@ public class BDCanal {
 
         /* Inner class that defines the table contents */
         public final class DatosTabla implements BaseColumns {
-            public static final String NOMBRE_TABLA = "Canal";
+            public static final String NOMBRE_TABLA = "Dispositivo";
             public static final String COLUMNA_ID = "id";
             public static final String COLUMNA_NOMBRE = "nombre";
             public static final String COLUMNA_API_KEY = "api_key";

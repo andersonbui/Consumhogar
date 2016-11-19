@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
-import com.andersonbuitron.mipruebathingspeakweb.modelos.Canal;
+import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
 
 import java.util.List;
 
@@ -17,19 +17,19 @@ import java.util.List;
  * Created by debian on 10/11/16.
  */
 
-public class CanalesAdapter extends ArrayAdapter<Canal>{
+public class DispositivoNoRegAdapter extends ArrayAdapter<Dispositivo>{
 
     Context context;
-    List<Canal> lista_canales;
+    List<Dispositivo> lista_canales;
 
-    public CanalesAdapter(Context context, List<Canal> objects) {
+    public DispositivoNoRegAdapter(Context context, List<Dispositivo> objects) {
         super(context, 0, objects); //resource  = 0
         int resource = 0;
         this.context = context;
         lista_canales = objects;
     }
 
-    public List<Canal> getLista_canales() {
+    public List<Dispositivo> getLista_canales() {
         return lista_canales;
     }
 
@@ -45,7 +45,7 @@ public class CanalesAdapter extends ArrayAdapter<Canal>{
         if(null == convertView){
             //si no existe, entonces inflarlo con el image_list_view.xml
             //ligar layout al adaptador
-            convertView = inflater.inflate(R.layout.template_list_item_noregistrados,
+            convertView = inflater.inflate(R.layout.template_list_item_dispositivos_no_reg,
                     parent,
                     false);
             holder = new ViewHolder();
@@ -59,10 +59,10 @@ public class CanalesAdapter extends ArrayAdapter<Canal>{
 
         //con holder
         //Lead actual
-        Canal canal = getItem(position);
+        Dispositivo dispositivo = getItem(position);
         //setup
-        holder.nombre.setText(canal.getNombre());
-        holder.id.setText(canal.getId());
+        holder.nombre.setText(dispositivo.getNombre());
+        holder.id.setText(dispositivo.getId());
 
         return convertView;
     }

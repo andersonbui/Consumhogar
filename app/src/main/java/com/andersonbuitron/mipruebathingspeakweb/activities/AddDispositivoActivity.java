@@ -1,5 +1,6 @@
 package com.andersonbuitron.mipruebathingspeakweb.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ActionMode;
@@ -13,7 +14,7 @@ import android.widget.Toast;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
 import com.andersonbuitron.mipruebathingspeakweb.database.BDCanal;
-import com.andersonbuitron.mipruebathingspeakweb.modelos.Canal;
+import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
 
 public class AddDispositivoActivity extends AppCompatActivity {
 
@@ -21,14 +22,15 @@ public class AddDispositivoActivity extends AppCompatActivity {
     TextView tv_id;
     EditText et_nombre, et_consumo;
     Spinner spinner_icono;
-    Canal canal;
+    Dispositivo dispositivo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_dispositivo);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Agregar Socket");
+        getSupportActionBar().setTitle("Agregar dispositivo");
 
         //mActionMode = startActionMode(mActionModeCallback);
         tv_id = (TextView) findViewById(R.id.tv_id);
@@ -36,11 +38,11 @@ public class AddDispositivoActivity extends AppCompatActivity {
         et_consumo = (EditText) findViewById(R.id.et_consumo);
         spinner_icono = (Spinner) findViewById(R.id.spinner_icono);
 
-        canal = (Canal) getIntent().getSerializableExtra("canal_clickeado");
+        dispositivo = (Dispositivo) getIntent().getSerializableExtra("canal_clickeado");
 
-        tv_id.setText(canal.getId());
-        et_nombre.setText(canal.getNombre());
-        Toast.makeText(this, "api_key: "+canal.getApi_key_write(), Toast.LENGTH_LONG).show();
+        tv_id.setText(dispositivo.getId());
+        et_nombre.setText(dispositivo.getNombre());
+        //Toast.makeText(this, "api_key: "+dispositivo.getApi_key_write(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -57,13 +59,16 @@ public class AddDispositivoActivity extends AppCompatActivity {
             // Respond to the action bar's Up/Home button
 
             case R.id.btn_Aceptar:
-                Toast.makeText(this, "Presionaste aceptar.", Toast.LENGTH_SHORT).show();
-
                 BDCanal bdCanal = new BDCanal(this);
-                canal.setNombre(et_nombre.getText().toString());
-                canal.setIcono("");
-                bdCanal.insertCanal(canal);
-                onBackPressed();
+                dispositivo.setNombre(et_nombre.getText().toString());
+                dispositivo.setIcono("");
+                Toast.makeText(this, "dispositivo guardado: "+ dispositivo.toString(), Toast.LENGTH_SHORT).show();
+                //bdCanal.insertCanal(dispositivo);
+                Intent intent = new Intent(this,MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+                //onBackPressed();
                 break;
 
             case android.R.id.home:

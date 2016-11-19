@@ -3,16 +3,16 @@ package com.andersonbuitron.mipruebathingspeakweb.modelos;
 import java.io.Serializable;
 
 /**
- * Canal que representa un channel de una cuenta de ThingSpeak
+ * Dispositivo que representa un channel de una cuenta de ThingSpeak
  */
 
-public class Canal implements Serializable {
+public class Dispositivo implements Serializable {
     private String id;
     private String nombre;
     private String api_key_write;
     private String icono;
 
-    public Canal(String id, String nombre, String api_key_write) {
+    public Dispositivo(String id, String nombre, String api_key_write) {
         this.nombre = nombre;
         this.id = id;
         this.api_key_write = api_key_write;
@@ -20,7 +20,7 @@ public class Canal implements Serializable {
 
     }
 
-    public Canal() {
+    public Dispositivo() {
         this.nombre = "";
         this.id = "";
         this.api_key_write = "";
@@ -61,16 +61,17 @@ public class Canal implements Serializable {
 
     @Override
     public String toString() {
-        return "Canal{" +
+        return "Dispositivo{" +
                 "id='" + id + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", api_key_write='" + api_key_write + '\'' +
+                ", icono='" + icono + '\'' +
                 '}';
     }
 
     @Override
     public boolean equals(Object obj) {
-        Canal otrocanal = (Canal)obj;
+        Dispositivo otrocanal = (Dispositivo)obj;
         return otrocanal.getId().equals(this.getId());
     }
 }

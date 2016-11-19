@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_reg_dispositivo"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@drawable/fondo_dispositivo"
+    android:padding="20dp"
+    android:layout_marginBottom="20dp"
+    >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_desktop"
+        android:id="@+id/iv_reg_icono"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/tv_reg_nombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TV SALA"
+        android:layout_toRightOf="@+id/iv_reg_icono"
+        android:layout_toLeftOf="@+id/sw_reg_power"
+        android:textColor="@android:color/background_dark" />
+
+    <TextView
+        android:id="@+id/tv_reg_consumo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="120 kwt - $4500"
+        android:layout_toRightOf="@+id/iv_reg_icono"
+        android:layout_toLeftOf="@+id/sw_reg_power"
+        android:layout_below="@+id/tv_reg_nombre"
+        android:textColor="@android:color/background_dark" />
+
+    <Switch
+        android:id="@+id/sw_reg_power"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:textOff="Off"
+        android:textOn="On"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>
