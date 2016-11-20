@@ -4,11 +4,20 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
+import com.andersonbuitron.mipruebathingspeakweb.adaptadores.DispositivoAdapter;
+import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorDispositivos;
+import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -20,6 +29,13 @@ import com.andersonbuitron.mipruebathingspeakweb.R;
  * create an instance of this fragment.
  */
 public class AzulFragment extends Fragment {
+
+    ListView lvDisposRegistradosList;
+    ArrayAdapter disposRegistradosAdapter;
+    List<Dispositivo> list_dispos_registrados;
+    private boolean mTwoPane;
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -63,10 +79,40 @@ public class AzulFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i("Informe","entro en onCreateView");
+        View root = inflater.inflate(R.layout.fragment_azul, container, false);
+
+        //instancia del listView
+        lvDisposRegistradosList = (ListView) root.findViewById(R.id.dispos_registrados_list);
+
+        list_dispos_registrados = new ArrayList<>();
+        //inicializa el adaptador con la fuente de datos
+        disposRegistradosAdapter = new DispositivoAdapter(getActivity(), list_dispos_registrados);
+
+        GestorDispositivos.getInstance(getActivity()).recuperarDispositivosBaseDatos(disposRegistradosAdapter);
+
+        //relacionando la lista con el adaptador
+        lvDisposRegistradosList.setAdapter(disposRegistradosAdapter);
+        //setear una escucha a las clicks de los item
+/*
+
+        lvDisposRegistradosList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Dispositivo dispositivoClickeado = (Dispositivo) disposRegistradosAdapter.getItem(position);
+                Toast.makeText(getActivity(), "Agregando socket:\n " + dispositivoClickeado.getNombre(), Toast.LENGTH_SHORT).show();
+                //view.setSelected(true);
+                Intent intent = new Intent(getActivity(), AddDispositivoActivity.class);
+                intent.putExtra("canal_clickeado", dispositivoClickeado);
+                startActivity(intent);
+            }
+
+        });*/
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_azul, container, false);
+        return root;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -107,4 +153,5 @@ public class AzulFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }

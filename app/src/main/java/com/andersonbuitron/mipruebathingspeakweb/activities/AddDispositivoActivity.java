@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
-import com.andersonbuitron.mipruebathingspeakweb.database.BDCanal;
+import com.andersonbuitron.mipruebathingspeakweb.database.BDDispositivo;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
 
 public class AddDispositivoActivity extends AppCompatActivity {
@@ -59,11 +59,12 @@ public class AddDispositivoActivity extends AppCompatActivity {
             // Respond to the action bar's Up/Home button
 
             case R.id.btn_Aceptar:
-                BDCanal bdCanal = new BDCanal(this);
+                BDDispositivo bdDispositivo = BDDispositivo.getInstance(this);
                 dispositivo.setNombre(et_nombre.getText().toString());
                 dispositivo.setIcono("");
                 Toast.makeText(this, "dispositivo guardado: "+ dispositivo.toString(), Toast.LENGTH_SHORT).show();
-                //bdCanal.insertCanal(dispositivo);
+                //insertar canal en la base de datos
+                bdDispositivo.insertCanal(dispositivo);
                 Intent intent = new Intent(this,MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

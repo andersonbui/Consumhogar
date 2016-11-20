@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_reg_dispositivo"
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:background="@drawable/fondo_dispositivo"
     android:padding="20dp"
     android:layout_marginBottom="20dp"
-    >
+    android:minHeight="?attr/listPreferredItemHeight">
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="40dp"
         android:src="@drawable/ic_desktop"
         android:id="@+id/iv_reg_icono"
@@ -36,15 +37,22 @@
         android:layout_below="@+id/tv_reg_nombre"
         android:textColor="@android:color/background_dark" />
 
-    <Switch
+    <me.xiaopan.switchbutton.SwitchButton
+        style="@style/item"
         android:id="@+id/sw_reg_power"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:text=""
         android:checked="true"
-        android:textOff="Off"
-        android:textOn="On"
+        android:background="@null"
+        app:withTextInterval="0dp"
+        app:frameDrawable="@drawable/switch_frame"
+        app:stateDrawable="@drawable/selector_switch_state"
+        app:stateMaskDrawable="@drawable/switch_state_mask"
+        app:sliderDrawable="@drawable/selector_switch_slider"
+        android:layout_width="wrap_content"
+        app:layout_anchor="@+id/item_detail_container"
+        app:layout_anchorGravity="top|center_horizontal"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"   />
 
 </RelativeLayout>

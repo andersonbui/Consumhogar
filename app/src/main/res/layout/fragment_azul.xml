@@ -2,13 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_light"
+    android:background="@android:color/holo_green_dark"
     tools:context="com.andersonbuitron.mipruebathingspeakweb.fragments.AzulFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ListView
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="Hello World!"
+        android:id="@+id/dispos_registrados_list"
+        android:divider="@null"
+        android:listSelector="@color/colorPrimary"
+        android:dividerHeight="10dp"
+        />
+   <!-- <include layout="@layout/item_list" />-->
 
 </FrameLayout>

@@ -16,16 +16,30 @@ import java.util.ArrayList;
  * para el crud de Dispositivo
  */
 
-public class BDCanal {
-    public static final int BOX_OFFICE = 0;
+public class BDDispositivo {
+    private static BDDispositivo bddispositivo = new BDDispositivo();
+
     private CanalHelper mHelper;
     private SQLiteDatabase mDatabase;
-    Context context;
+    private Context context;
 
-    public BDCanal(Context context) {
+    public static BDDispositivo getInstance(Context context){
+        bddispositivo.setContext(context);
+        return bddispositivo;
+    }
+
+    private BDDispositivo() {
+        this.context = null;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
         mHelper = new CanalHelper(context);
         mDatabase = mHelper.getWritableDatabase();
-        this.context = context;
     }
 
     public void insertCanal(Dispositivo dispositivo) {
@@ -81,7 +95,7 @@ public class BDCanal {
         return listDispositivo;
     }
 
-    public Dispositivo buscarCanal(String id){
+    public Dispositivo buscarDispositivo(String id){
 
         String[] projection = {
                 CanalHelper.DatosTabla.COLUMNA_ID,
@@ -141,7 +155,9 @@ public class BDCanal {
         }
         mDatabase.delete(CanalHelper.DatosTabla.NOMBRE_TABLA, null, null);
     }
-    
+
+
+
     public class CanalHelper extends SQLiteOpenHelper {
 
         // If you change the database schema, you must increment the database version.
@@ -150,11 +166,11 @@ public class BDCanal {
 
         private static final String TEXT_TYPE = " TEXT";
         private static final String COMMA_SEP = ",";
-        private static final String CREAR_TABLA_1 =
+        private static final String CREAR_TABLA =
                 "CREATE TABLE " + DatosTabla.NOMBRE_TABLA + " (" +
                         DatosTabla.COLUMNA_ID + " INTEGER PRIMARY KEY," +
                         DatosTabla.COLUMNA_NOMBRE + TEXT_TYPE + COMMA_SEP +
-                        DatosTabla.COLUMNA_API_KEY + TEXT_TYPE +
+                        DatosTabla.COLUMNA_API_KEY + TEXT_TYPE +COMMA_SEP +
                         DatosTabla.COLUMNA_ICONO + TEXT_TYPE + " )";
 
         private static final String SQL_DELETE_ENTRIES =
@@ -166,7 +182,7 @@ public class BDCanal {
             public static final String COLUMNA_ID = "id";
             public static final String COLUMNA_NOMBRE = "nombre";
             public static final String COLUMNA_API_KEY = "api_key";
-            public static final String COLUMNA_ICONO = "api_key";
+            public static final String COLUMNA_ICONO = "icono";
         }
 
         public CanalHelper(Context context) {
@@ -175,7 +191,7 @@ public class BDCanal {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            db.execSQL(CREAR_TABLA_1);
+            db.execSQL(CREAR_TABLA);
         }
 
         @Override

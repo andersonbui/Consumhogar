@@ -9,13 +9,5 @@
     tools:context="com.andersonbuitron.mipruebathingspeakweb.activities.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <ListView
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello World!"
-        android:id="@+id/dispos_registrados_list"
-        android:divider="@null"
-        android:dividerHeight="10dp"/>
 
 </RelativeLayout>

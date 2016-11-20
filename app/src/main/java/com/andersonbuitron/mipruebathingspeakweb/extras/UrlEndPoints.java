@@ -11,6 +11,8 @@ public class UrlEndPoints {
     public static final String THINGSPEAK_URL = "https://api.thingspeak.com/";
     public static final String THINGSPEAK_CHANNELS = "channels";
     public static final String THINGSPEAK_CHANNEL = "channel";
+    public static final String THINGSPEAK_UPDATE = "update";
+    public static final String THINGSPEAK_FIELD= "field";
     public static final String URL_JSON = ".json";
     public static final String URL_CHAR_QUESTION = "?";
     public static final String URL_CHAR_AMEPERSAND = "&";

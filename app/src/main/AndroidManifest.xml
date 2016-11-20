@@ -13,16 +13,24 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"
-            >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.AddDispositivoActivity"></activity>
+        <activity android:name=".activities.AddDispositivoActivity" />
+        <activity
+            android:name=".activities.ItemDetailActivity"
+            android:label="@string/title_item_detail"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.andersonbuitron.mipruebathingspeakweb.activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

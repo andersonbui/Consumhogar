@@ -1,6 +1,5 @@
 package com.andersonbuitron.mipruebathingspeakweb.activities;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,24 +12,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
-import com.andersonbuitron.mipruebathingspeakweb.adaptadores.DispositivoAdapter;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.AzulFragment;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.DispositivoNoRegFragment;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.VerdeFragment;
-import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorDispositivos;
-import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -38,12 +27,6 @@ public class MainActivity extends AppCompatActivity
         VerdeFragment.OnFragmentInteractionListener,
         AzulFragment.OnFragmentInteractionListener,
         DispositivoNoRegFragment.OnFragmentInteractionListener {
-
-
-    ListView lvDisposRegistradosList;
-    ArrayAdapter disposRegistradosAdapter;
-    ArrayList<Dispositivo> list_dispos_registrados;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +54,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new AzulFragment()).commit();
+
         //--------------------------------------------
+        /*
         //instancia del listView
         lvDisposRegistradosList = (ListView) findViewById(R.id.dispos_registrados_list);
 
@@ -79,7 +65,7 @@ public class MainActivity extends AppCompatActivity
         //inicializa el adaptador con la fuente de datos
         disposRegistradosAdapter = new DispositivoAdapter(this, list_dispos_registrados);
 
-        GestorDispositivos.getInstance(this).recuperarCanalesBaseDatos(disposRegistradosAdapter);
+        GestorDispositivos.getInstance(this).recuperarDispositivosBaseDatos(disposRegistradosAdapter);
 
         //relacionando la lista con el adaptador
         lvDisposRegistradosList.setAdapter(disposRegistradosAdapter);
@@ -87,15 +73,16 @@ public class MainActivity extends AppCompatActivity
 
         lvDisposRegistradosList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View compoundButton, int position, long l) {
                 Dispositivo dispositivoClickeado = (Dispositivo) disposRegistradosAdapter.getItem(position);
                 Toast.makeText(getApplicationContext(), "Agregando socket:\n " + dispositivoClickeado.getNombre(), Toast.LENGTH_SHORT).show();
-                //view.setSelected(true);
+                //compoundButton.setSelected(true);
                 Intent intent = new Intent(getApplicationContext(), AddDispositivoActivity.class);
                 intent.putExtra("canal_clickeado", dispositivoClickeado);
                 startActivity(intent);
             }
         });
+        */
 
     }
 
@@ -134,12 +121,13 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Handle navigation compoundButton item clicks here.
         int id = item.getItemId();
         Fragment fragment = null;
         Boolean fragmentoSeleccionado = false;
         switch (id) {
             case R.id.nav_camera:
+                /*
                 if (getSupportFragmentManager().getFragments() != null
                         && getSupportFragmentManager().getFragments().size() > 0
                         && getSupportFragmentManager().getFragments().get(0) != null
@@ -149,7 +137,11 @@ public class MainActivity extends AppCompatActivity
                     Log.i("size", "" + getSupportFragmentManager().getFragments().size());
                     Log.i("toarray", "" + getSupportFragmentManager().getFragments().get(0));
                     getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().getFragments().get(0)).commit();
-                }
+                }*/
+
+                fragment = new AzulFragment();
+                fragmentoSeleccionado = true;
+
                 break;
             case R.id.nav_gallery:
                 fragment = new VerdeFragment();
@@ -160,8 +152,6 @@ public class MainActivity extends AppCompatActivity
                 fragmentoSeleccionado = true;
                 break;
             case R.id.nav_manage:
-                fragment = new AzulFragment();
-                fragmentoSeleccionado = true;
                 break;
             case R.id.nav_share:
                 break;
