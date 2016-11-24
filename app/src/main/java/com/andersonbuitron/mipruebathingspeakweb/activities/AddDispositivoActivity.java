@@ -20,7 +20,7 @@ public class AddDispositivoActivity extends AppCompatActivity {
 
     ActionMode mActionMode = null;
     TextView tv_id;
-    EditText et_nombre, et_consumo;
+    EditText et_nombre;
     Spinner spinner_icono;
     Dispositivo dispositivo;
 
@@ -35,7 +35,6 @@ public class AddDispositivoActivity extends AppCompatActivity {
         //mActionMode = startActionMode(mActionModeCallback);
         tv_id = (TextView) findViewById(R.id.tv_id);
         et_nombre = (EditText) findViewById(R.id.et_nombre);
-        et_consumo = (EditText) findViewById(R.id.et_consumo);
         spinner_icono = (Spinner) findViewById(R.id.spinner_icono);
 
         dispositivo = (Dispositivo) getIntent().getSerializableExtra("canal_clickeado");

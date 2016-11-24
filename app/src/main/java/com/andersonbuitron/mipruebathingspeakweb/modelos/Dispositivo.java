@@ -17,7 +17,6 @@ public class Dispositivo implements Serializable {
         this.id = id;
         this.api_key_write = api_key_write;
         this.icono = "";
-
     }
 
     public Dispositivo() {
@@ -59,13 +58,14 @@ public class Dispositivo implements Serializable {
         this.icono = icono;
     }
 
+
     @Override
     public String toString() {
         return "Dispositivo{" +
                 "id='" + id + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", api_key_write='" + api_key_write + '\'' +
-                ", icono='" + icono + '\'' +
+                ", icono='" + icono +
                 '}';
     }
 

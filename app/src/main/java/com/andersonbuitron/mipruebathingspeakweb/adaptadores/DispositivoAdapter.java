@@ -59,23 +59,12 @@ public class DispositivoAdapter extends ArrayAdapter<Dispositivo>{
             holder.consumo = (TextView) convertView.findViewById(R.id.tv_reg_consumo);
             holder.power = (CompoundButton) convertView.findViewById(R.id.sw_reg_power);
 
+
             //comportamiento del switch power
             holder.power.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)  {
-                    String valor = "";
-                    if(isChecked){
-
-                        Toast.makeText(context, "Dispositivo prendido", Toast.LENGTH_SHORT).show();
-                        valor = "1";
-                    }else {
-                        valor = "0";
-                        Toast.makeText(context, "Dispositivo apagado", Toast.LENGTH_SHORT).show();
-                    }
-
-                    GestorDispositivos.
-                            getInstance(context).
-                            enviarDatoThingSpeak(getItem(position).getApi_key_write(),2,valor,holder.power);
+                    notificarCambiodeSwitchApagado(isChecked,context,holder.power,getItem(position).getApi_key_write());
                 }
             });
             
@@ -85,19 +74,7 @@ public class DispositivoAdapter extends ArrayAdapter<Dispositivo>{
                 @Override
                 public void onClick(View view) {
                     CompoundButton buttonView = (CompoundButton)view;
-                    String valor = "";
-                    if(buttonView.isChecked()){
-
-                        Toast.makeText(context, "Dispositivo prendido", Toast.LENGTH_SHORT).show();
-                        valor = "1";
-                    }else {
-                        valor = "0";
-                        Toast.makeText(context, "Dispositivo apagado", Toast.LENGTH_SHORT).show();
-                    }
-
-                    GestorDispositivos.
-                            getInstance(context).
-                            enviarDatoThingSpeak(getItem(position).getApi_key_write(),2,valor,buttonView);
+                    notificarCambiodeSwitchApagado(isChecked,context,holder.power,getItem(position).getApi_key_write());
                 }
 
             });*/
@@ -127,6 +104,23 @@ public class DispositivoAdapter extends ArrayAdapter<Dispositivo>{
         holder.consumo.setText("1500kw-$1200");
 
         return convertView;
+    }
+
+    public static void notificarCambiodeSwitchApagado(boolean isChecked,Context context,CompoundButton checkCButton,String api_keyDispositivo){
+        String valor = "";
+        String mensaje = "";
+
+        if(isChecked){
+            mensaje = "prendido";
+            valor = GestorDispositivos.SWITCH_FIELD_VALUE_PRENDIDO;
+        }else {
+            mensaje = "apagado";
+            valor = GestorDispositivos.SWITCH_FIELD_VALUE_APAGADO;
+        }
+        Toast.makeText(context, "Dispositivo "+mensaje, Toast.LENGTH_SHORT).show();
+        GestorDispositivos.
+                getInstance(context).
+                enviarDatoThingSpeak(api_keyDispositivo,GestorDispositivos.SWITCH_FIELD,valor,checkCButton);
     }
 
     static class ViewHolder {

@@ -31,6 +31,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.andersonbuitron.mipruebathingspeakweb.activities.MainActivity" />
         </activity>
+        <activity android:name=".activities.GraficaDiaActivity" />
+        <activity android:name=".activities.ValorConsumoActivity"></activity>
     </application>
 
 </manifest>

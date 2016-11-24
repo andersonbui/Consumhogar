@@ -67,13 +67,6 @@
             android:hint="Ingrese nombre"
             android:paddingTop="16dp" />
 
-        <EditText
-            android:id="@+id/et_consumo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/et_nombre"
-            android:hint="Ingrese consumo en kwh"
-            android:paddingTop="16dp" />
 
     </RelativeLayout>
 </RelativeLayout>

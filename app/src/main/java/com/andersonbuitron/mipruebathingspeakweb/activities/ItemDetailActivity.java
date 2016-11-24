@@ -10,10 +10,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
+import com.andersonbuitron.mipruebathingspeakweb.adaptadores.DispositivoAdapter;
+import com.andersonbuitron.mipruebathingspeakweb.fragments.DispositivosFragment;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.ItemDetailFragment;
 import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorDispositivos;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
@@ -44,6 +47,7 @@ public class ItemDetailActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });*/
+
         mDispositivo = (Dispositivo) getIntent().getSerializableExtra(ItemDetailFragment.ARG_ITEM_DISPOSITIVO);
 
         //comportamiento del switch power
@@ -52,19 +56,7 @@ public class ItemDetailActivity extends AppCompatActivity {
         compoundButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)  {
-                String valor = "";
-                if(isChecked){
-
-                    Toast.makeText(ItemDetailActivity.this, "Dispositivo prendido", Toast.LENGTH_SHORT).show();
-                    valor = "1";
-                }else {
-                    valor = "0";
-                    Toast.makeText(ItemDetailActivity.this, "Dispositivo apagado", Toast.LENGTH_SHORT).show();
-                }
-
-                GestorDispositivos.
-                        getInstance(getApplicationContext()).
-                        enviarDatoThingSpeak(mDispositivo.getApi_key_write(),2,valor, compoundButton);
+                DispositivoAdapter.notificarCambiodeSwitchApagado(isChecked,getApplicationContext(),buttonView,mDispositivo.getApi_key_write());
             }
         });
 
@@ -108,6 +100,8 @@ public class ItemDetailActivity extends AppCompatActivity {
             builder.setMessage(R.string.dialog_borrar_dispositivo)
                     .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            GestorDispositivos gestorD = GestorDispositivos.getInstance(getApplicationContext());
+                            gestorD.eliminarDispositivo(mDispositivo.getId(), DispositivosFragment.disposRegistradosAdapter);
                             Toast.makeText(getApplicationContext(), "dispositivo borrado ", Toast.LENGTH_SHORT).show();
                             navigateUpTo(new Intent(getApplicationContext(), MainActivity.class));
                         }
@@ -136,4 +130,60 @@ public class ItemDetailActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    public void getUltimoValor(View view) {
+        GestorDispositivos gestionDis = GestorDispositivos.getInstance(getApplicationContext());
+        gestionDis.solicitarUltimoValorDeField(mDispositivo.getApi_key_write(),GestorDispositivos.SWITCH_FIELD,mDispositivo.getId());
+    }
+
+    public void getConsumoDiario(View view) {
+
+        Intent intent = new Intent(getApplicationContext(),GraficaDiaActivity.class);
+        intent.putExtra(GraficaDiaActivity.EXTRA_DISPOSITIVO,mDispositivo);
+        startActivity(intent);
+        /*
+        GestorDispositivos gestionDis = GestorDispositivos.getInstance(getApplicationContext());
+        Calendar calendar = Calendar.getInstance();
+        Date ffinal  = calendar.getTime();
+        calendar.set(Calendar.DAY_OF_MONTH,0);
+        calendar.set(Calendar.HOUR_OF_DAY,0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+        Date finicial = calendar.getTime();
+        String escala = "daily"; //minutos
+
+        final ArrayList<FeedField> listaFeedField = new ArrayList();
+        TareaList nuevaTarea = new TareaList() {
+            @Override
+            public void ejecutar(ArrayList<FeedField> listaFeedField) {
+                //Toast.makeText(ItemDetailActivity.this, "listaFeedField: "+listaFeedField.toString(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(),GraficaDiaActivity.class);
+                intent.putExtra(GraficaDiaActivity.EXTRA_DISPOSITIVO,listaFeedField);
+                startActivity(intent);
+            }
+            @Override
+            public List getList() {
+                return listaFeedField;
+            }
+        };
+        gestionDis.solicitarValoresDeField(mDispositivo.getApi_key_write(),GestorDispositivos.VALUE_FIELD_NUMBER,mDispositivo.getId(),finicial,ffinal,escala,nuevaTarea);
+*/
+    }
+
+    public void getConsumoMensual(View view) {/*
+        GestorDispositivos gestionDis = GestorDispositivos.getInstance(getApplicationContext());
+        Calendar calendar = Calendar.getInstance();
+        Date ffinal  = calendar.getTime();
+        calendar.set(Calendar.DAY_OF_MONTH,1);
+        calendar.set(Calendar.HOUR_OF_DAY,0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+        Date finicial = calendar.getTime();
+        String escala = "daily"; //minutos
+
+        String url=gestionDis.solicitarValoresDeField(mDispositivo.getApi_key_write(),2,mDispositivo.getId(),finicial,ffinal,escala);
+
+        Intent intent = new Intent(this,GraficaDiaActivity.class);
+        intent.putExtra("url",url);
+        startActivity(intent);*/
+    }
 }

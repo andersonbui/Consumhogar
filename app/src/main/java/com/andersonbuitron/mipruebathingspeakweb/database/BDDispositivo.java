@@ -144,12 +144,12 @@ public class BDDispositivo {
     }
 
     public void deleteCanal(String idCanal) {
-        String selection3 = CanalHelper.DatosTabla.COLUMNA_ID + "=?";
-        String[] selectionArgs3 = {idCanal};
+        String selection = CanalHelper.DatosTabla.COLUMNA_ID + " = ? ";
+        String[] selectionArgs = {idCanal};
 
-        int res = mDatabase.delete(CanalHelper.DatosTabla.NOMBRE_TABLA, selection3, selectionArgs3);
+        int res = mDatabase.delete(CanalHelper.DatosTabla.NOMBRE_TABLA, selection, selectionArgs);
         if(res > 0){
-            Toast.makeText(context, "Se elimino el canal con id["+idCanal+"]", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Se elimino el canal con id["+idCanal+"] #filas["+res+"]", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(context,"No se elimino ningun registro: ",Toast.LENGTH_LONG).show();
         }
@@ -203,5 +203,6 @@ public class BDDispositivo {
             onCreate(db);
 
         }
+
     }
 }

@@ -1,5 +1,6 @@
 package com.andersonbuitron.mipruebathingspeakweb.activities;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,7 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
-import com.andersonbuitron.mipruebathingspeakweb.fragments.AzulFragment;
+import com.andersonbuitron.mipruebathingspeakweb.fragments.DispositivosFragment;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.DispositivoNoRegFragment;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.VerdeFragment;
 
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity
         implements
         NavigationView.OnNavigationItemSelectedListener,
         VerdeFragment.OnFragmentInteractionListener,
-        AzulFragment.OnFragmentInteractionListener,
+        DispositivosFragment.OnFragmentInteractionListener,
         DispositivoNoRegFragment.OnFragmentInteractionListener {
 
     @Override
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new AzulFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new DispositivosFragment()).commit();
 
         //--------------------------------------------
         /*
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         Boolean fragmentoSeleccionado = false;
         switch (id) {
-            case R.id.nav_camera:
+            case R.id.nav_home:
                 /*
                 if (getSupportFragmentManager().getFragments() != null
                         && getSupportFragmentManager().getFragments().size() > 0
@@ -139,24 +140,26 @@ public class MainActivity extends AppCompatActivity
                     getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().getFragments().get(0)).commit();
                 }*/
 
-                fragment = new AzulFragment();
+                fragment = new DispositivosFragment();
                 fragmentoSeleccionado = true;
 
                 break;
-            case R.id.nav_gallery:
-                fragment = new VerdeFragment();
-                fragmentoSeleccionado = true;
+            case R.id.nav_set_valor_consumo:
+                Intent intent =  new Intent(this,ValorConsumoActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_slideshow:
                 fragment = new DispositivoNoRegFragment();
                 fragmentoSeleccionado = true;
                 break;
             case R.id.nav_manage:
-                break;
+                fragment = new VerdeFragment();
+                fragmentoSeleccionado = true;
+                break;/*
             case R.id.nav_share:
                 break;
             case R.id.nav_send:
-                break;
+                break;*/
             default:
 
         }

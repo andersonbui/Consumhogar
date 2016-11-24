@@ -23,15 +23,15 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AzulFragment.OnFragmentInteractionListener} interface
+ * {@link DispositivosFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AzulFragment#newInstance} factory method to
+ * Use the {@link DispositivosFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AzulFragment extends Fragment {
+public class DispositivosFragment extends Fragment {
 
     ListView lvDisposRegistradosList;
-    ArrayAdapter disposRegistradosAdapter;
+    public static ArrayAdapter disposRegistradosAdapter;
     List<Dispositivo> list_dispos_registrados;
     private boolean mTwoPane;
 
@@ -47,7 +47,7 @@ public class AzulFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public AzulFragment() {
+    public DispositivosFragment() {
         // Required empty public constructor
     }
 
@@ -57,11 +57,11 @@ public class AzulFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AzulFragment.
+     * @return A new instance of fragment DispositivosFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AzulFragment newInstance(String param1, String param2) {
-        AzulFragment fragment = new AzulFragment();
+    public static DispositivosFragment newInstance(String param1, String param2) {
+        DispositivosFragment fragment = new DispositivosFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -82,7 +82,7 @@ public class AzulFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i("Informe","entro en onCreateView");
-        View root = inflater.inflate(R.layout.fragment_azul, container, false);
+        View root = inflater.inflate(R.layout.fragment_dispositivos, container, false);
 
         //instancia del listView
         lvDisposRegistradosList = (ListView) root.findViewById(R.id.dispos_registrados_list);

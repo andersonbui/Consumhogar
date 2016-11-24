@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
@@ -25,6 +26,9 @@ public class ItemDetailFragment extends Fragment {
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
+    Button btn_get_consumo_diario;
+    Button btn_get_consumo_mensual;
+
     public static final String ARG_ITEM_DISPOSITIVO = "dispositivo_selected";
 
     /**
@@ -55,12 +59,14 @@ public class ItemDetailFragment extends Fragment {
                 appBarLayout.setTitle(mItem.getNombre());
             }
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.item_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_item_detail, container, false);
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {

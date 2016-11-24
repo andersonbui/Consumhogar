@@ -76,7 +76,7 @@ public class DispositivoNoRegFragment extends Fragment {
 
         //inicializa el adaptador con la fuente de datos
         mCanalesAdapter = new DispositivoNoRegAdapter(getActivity(),list_canales);
-        GestorDispositivos.getInstance(getContext()).realizarSolicitudGET(mCanalesAdapter);
+        GestorDispositivos.getInstance(getContext()).obtenerDispositivosEn(mCanalesAdapter);
 
         //relacionando la lista con el adaptador
         vCanalesList.setAdapter(mCanalesAdapter);
