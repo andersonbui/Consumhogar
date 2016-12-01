@@ -54,21 +54,24 @@ public class GraficaDiaActivity extends AppCompatActivity {
     public void solicitarDatos(int anio, int mes, int dia) {
         //-----
         Calendar calendar = Calendar.getInstance();
-        calendar.set(anio, mes, 0);
+        calendar.set(anio, mes-1, 0);
         Date finicial = calendar.getTime();
 
         calendar.set(anio, mes, dia + 1);
         Date ffinal = calendar.getTime();
 
-        String escala = "720"; //diario
+        String escala = "1440"; //diario
 
         listaFeedField = new ArrayList();
         TareaList nuevaTarea = new TareaList() {
             @Override
             public void ejecutar(ArrayList<FeedField> listaFF) {
                 listaFeedField = listaFF;
+                if(listaFeedField == null){
+                    listaFeedField = new ArrayList<>();
+                }
                 //Toast.makeText(getApplicationContext(), "listaFeedField: "+listaFeedField.toString(), Toast.LENGTH_LONG).show();
-                limiteConsumoDiario = (float) calcularLimiteCondumoDiario(listaFF);
+                limiteConsumoDiario = (float) calcularLimiteCondumoDiario(listaFeedField);
                 inicializar_variables();
             }
 
@@ -86,7 +89,11 @@ public class GraficaDiaActivity extends AppCompatActivity {
     public double calcularLimiteCondumoDiario(ArrayList<FeedField> listaFF) {
 
         //return  promedio( listaFF);
+        if(listaFF==null){
+            return 0;
+        }
         return media(listaFF);
+
     }
     public ArrayList<FeedField>  ordenarListaFF(ArrayList<FeedField> listaFF) {
         ArrayList<FeedField> lista = new ArrayList<>();
@@ -186,7 +193,7 @@ public class GraficaDiaActivity extends AppCompatActivity {
         GestorDispositivos gestorD =  GestorDispositivos.getInstance(getApplicationContext());
         //int consumo = gestorD.leerConsumo(this);
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setValueFormatter(new LeftAxisValueFormatter(300));
+        leftAxis.setValueFormatter(new LeftAxisValueFormatter(200));
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setValueFormatter(new RightAxisValueFormatter());
@@ -207,7 +214,7 @@ public class GraficaDiaActivity extends AppCompatActivity {
         }
         mChart.setDescription(descripcion);  // set the description
         //bardataset.setColors( ColorTemplate.);
-        bardataset.setHighLightColor(Color.rgb(255, 0, 0));
+        bardataset.setHighLightColor(Color.rgb(0, 255, 10));
         bardataset.setHighlightEnabled(true);
         bardataset.setAxisDependency(RIGHT);
 
@@ -267,7 +274,7 @@ public class GraficaDiaActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (item.getItemId() == android.R.id.home) {
-            Intent intent = new Intent(GraficaDiaActivity.this, MainActivity.class);
+            Intent intent = new Intent(GraficaDiaActivity.this, MisDispositivosActivity.class);
             //intent.putExtra( "disp_seleccionado", objDispositivo );
             startActivity(intent);
         }

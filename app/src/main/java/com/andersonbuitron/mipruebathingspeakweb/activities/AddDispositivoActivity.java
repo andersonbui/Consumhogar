@@ -64,7 +64,7 @@ public class AddDispositivoActivity extends AppCompatActivity {
                 Toast.makeText(this, "dispositivo guardado: "+ dispositivo.toString(), Toast.LENGTH_SHORT).show();
                 //insertar canal en la base de datos
                 bdDispositivo.insertCanal(dispositivo);
-                Intent intent = new Intent(this,MainActivity.class);
+                Intent intent = new Intent(this,MisDispositivosActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();

@@ -22,7 +22,7 @@ import com.andersonbuitron.mipruebathingspeakweb.fragments.DispositivosFragment;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.DispositivoNoRegFragment;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.VerdeFragment;
 
-public class MainActivity extends AppCompatActivity
+public class MisDispositivosActivity extends AppCompatActivity
         implements
         NavigationView.OnNavigationItemSelectedListener,
         VerdeFragment.OnFragmentInteractionListener,

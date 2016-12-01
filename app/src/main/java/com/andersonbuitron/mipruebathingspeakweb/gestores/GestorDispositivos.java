@@ -436,7 +436,7 @@ public class GestorDispositivos {
         @Override
         public void ejecutar(String resultado) {
             //resultado = "[{\"id\":175991,\"name\":\"SocketLatitudLongitud\",\"description\":\"Socket175991\",\"latitude\":\"0.0\",\"longitude\":\"0.0\",\"created_at\":\"2016-10-27T17:22:18Z\",\"elevation\":\"\",\"last_entry_id\":5,\"ranking\":70,\"metadata\":\"ninguno\",\"tags\":[{\"id\":13553,\"name\":\"socket\"},{\"id\":14072,\"name\":\"proyectoiot\"}],\"api_keys\":[{\"api_key\":\"LNIG6BFA4TF38M7Q\",\"write_flag\":true},{\"api_key\":\"MI5UJJBT6FD5BCIY\",\"write_flag\":false}]},{\"id\":181453,\"name\":\"Socket181453\",\"description\":\"Dispositivo01\",\"latitude\":\"0.0\",\"longitude\":\"0.0\",\"created_at\":\"2016-11-10T15:06:37Z\",\"elevation\":\"\",\"last_entry_id\":null,\"ranking\":50,\"metadata\":\"\",\"tags\":[],\"api_keys\":[{\"api_key\":\"LVNMQI6UKASFV7LA\",\"write_flag\":true},{\"api_key\":\"M6FWUOM2S917N0M0\",\"write_flag\":false}]},{\"id\":181528,\"name\":\"Socket181528\",\"description\":\"asd\",\"latitude\":\"0.0\",\"longitude\":\"0.0\",\"created_at\":\"2016-11-10T18:33:28Z\",\"elevation\":\"\",\"last_entry_id\":null,\"ranking\":50,\"metadata\":\"\",\"tags\":[],\"api_keys\":[{\"api_key\":\"IMJ8ZRC3GG4TR9GD\",\"write_flag\":true},{\"api_key\":\"5G8HEPJIID11ZS31\",\"write_flag\":false}]},{\"id\":181978,\"name\":\"CanalesRegistrados\",\"description\":\"CanalesRegistrados\",\"latitude\":\"0.0\",\"longitude\":\"0.0\",\"created_at\":\"2016-11-11T19:27:02Z\",\"elevation\":\"\",\"last_entry_id\":null,\"ranking\":50,\"metadata\":\"\",\"tags\":[],\"api_keys\":[{\"api_key\":\"WTGLQE8YBPYRKDUK\",\"write_flag\":true},{\"api_key\":\"02V97LOG7MRJD56K\",\"write_flag\":false}]}]";
-            Toast.makeText(context, "resultado: " + resultado + "-duracion[]", Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, "resultado: " + resultado + "-duracion[]", Toast.LENGTH_LONG).show();
             listaValores = (ArrayList<FeedField>) parseListaFeedField(resultado, field);
             unaTareaList.ejecutar(listaValores);
             //Toast.makeText(context, "LISTA: " + listaValores, Toast.LENGTH_LONG).show();
@@ -455,27 +455,16 @@ public class GestorDispositivos {
             Log.i("url", url);
             return url;
         }
-        /*
-        public String getUrlG() {
-            //ejemplo
-            //https://thingspeak.com/channels/175991/charts/1.json?sum=60&start=2016-11-20T15:00:00&end=2016-11-20T19:00:00
 
-            DateFormat df = new SimpleDateFormat(FORMATO_FECHA);
-            String url = THINGSPEAK_URL + THINGSPEAK_CHANNELS + "/" + idcanal + "/" + "charts" + "/" + field +
-                    URL_CHAR_QUESTION + THINGSPEAK_SUM + escalaEnMin + URL_CHAR_AMEPERSAND +
-                    THINGSPEAK_START + df.format(finicial) + URL_CHAR_AMEPERSAND +
-                    THINGSPEAK_END + df.format(ffinal) +
-                    "&title=Salida%20valor%20field2&xaxis=Tiempo&yaxis=valor%20concumo%20[kwts]&color=blue&type=column&width=600&height=400&yaxismax=&dynamic=true";
-            Log.i("url", url);
-            return url;
-        }*/
     }
 
     private ArrayList<Dispositivo> fitrarCanales(ArrayList<Dispositivo> canales) {
 
         BDDispositivo bdDispositivo = BDDispositivo.getInstance(context);
         List<Dispositivo> list_canales = bdDispositivo.leerCanales();
-        canales.removeAll(list_canales);
+        if(list_canales != null){
+            canales.removeAll(list_canales);
+        }
 
         return canales;
     }

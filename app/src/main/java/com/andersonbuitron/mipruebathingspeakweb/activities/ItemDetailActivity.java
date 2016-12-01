@@ -2,7 +2,9 @@ package com.andersonbuitron.mipruebathingspeakweb.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,8 @@ import android.widget.Toast;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
 import com.andersonbuitron.mipruebathingspeakweb.adaptadores.DispositivoAdapter;
+import com.andersonbuitron.mipruebathingspeakweb.fragments.ConsumoDiarioFragment;
+import com.andersonbuitron.mipruebathingspeakweb.fragments.ConsumoHoraFragment;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.DispositivosFragment;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.ItemDetailFragment;
 import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorDispositivos;
@@ -27,7 +31,8 @@ import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
  * item details are presented side-by-side with a list of items
  * in a {@link //ItemListActivity}.
  */
-public class ItemDetailActivity extends AppCompatActivity {
+public class ItemDetailActivity extends AppCompatActivity implements
+        ConsumoDiarioFragment.OnFragmentInteractionListener,ConsumoHoraFragment.OnFragmentInteractionListener{
 
     Dispositivo mDispositivo;
     CompoundButton compoundButton;
@@ -66,6 +71,12 @@ public class ItemDetailActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        // Definir fragment inicial de consumo
+/*
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.contenedor_tipo_consumo,  new ConsumoDiarioFragment()).
+                commit();
+*/
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
         // (e.g. when rotating the screen from portrait to landscape).
@@ -75,6 +86,7 @@ public class ItemDetailActivity extends AppCompatActivity {
         //
         // http://developer.android.com/guide/components/fragments.html
         //
+
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
@@ -103,7 +115,7 @@ public class ItemDetailActivity extends AppCompatActivity {
                             GestorDispositivos gestorD = GestorDispositivos.getInstance(getApplicationContext());
                             gestorD.eliminarDispositivo(mDispositivo.getId(), DispositivosFragment.disposRegistradosAdapter);
                             Toast.makeText(getApplicationContext(), "dispositivo borrado ", Toast.LENGTH_SHORT).show();
-                            navigateUpTo(new Intent(getApplicationContext(), MainActivity.class));
+                            navigateUpTo(new Intent(getApplicationContext(), MisDispositivosActivity.class));
                         }
                     })
                     .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -117,7 +129,7 @@ public class ItemDetailActivity extends AppCompatActivity {
         }else
         if (id == android.R.id.home) {
 
-            navigateUpTo(new Intent(this, MainActivity.class));
+            navigateUpTo(new Intent(this, MisDispositivosActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -135,38 +147,12 @@ public class ItemDetailActivity extends AppCompatActivity {
         gestionDis.solicitarUltimoValorDeField(mDispositivo.getApi_key_write(),GestorDispositivos.SWITCH_FIELD,mDispositivo.getId());
     }
 
-    public void getConsumoDiario(View view) {
+    public void mostrarGraficoDiario(View view) {
 
         Intent intent = new Intent(getApplicationContext(),GraficaDiaActivity.class);
         intent.putExtra(GraficaDiaActivity.EXTRA_DISPOSITIVO,mDispositivo);
         startActivity(intent);
-        /*
-        GestorDispositivos gestionDis = GestorDispositivos.getInstance(getApplicationContext());
-        Calendar calendar = Calendar.getInstance();
-        Date ffinal  = calendar.getTime();
-        calendar.set(Calendar.DAY_OF_MONTH,0);
-        calendar.set(Calendar.HOUR_OF_DAY,0);
-        calendar.set(Calendar.MINUTE,0);
-        calendar.set(Calendar.SECOND,0);
-        Date finicial = calendar.getTime();
-        String escala = "daily"; //minutos
 
-        final ArrayList<FeedField> listaFeedField = new ArrayList();
-        TareaList nuevaTarea = new TareaList() {
-            @Override
-            public void ejecutar(ArrayList<FeedField> listaFeedField) {
-                //Toast.makeText(ItemDetailActivity.this, "listaFeedField: "+listaFeedField.toString(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(),GraficaDiaActivity.class);
-                intent.putExtra(GraficaDiaActivity.EXTRA_DISPOSITIVO,listaFeedField);
-                startActivity(intent);
-            }
-            @Override
-            public List getList() {
-                return listaFeedField;
-            }
-        };
-        gestionDis.solicitarValoresDeField(mDispositivo.getApi_key_write(),GestorDispositivos.VALUE_FIELD_NUMBER,mDispositivo.getId(),finicial,ffinal,escala,nuevaTarea);
-*/
     }
 
     public void getConsumoMensual(View view) {/*
@@ -186,4 +172,38 @@ public class ItemDetailActivity extends AppCompatActivity {
         intent.putExtra("url",url);
         startActivity(intent);*/
     }
+
+    public void onClickItemSelected(View view) {
+        // Handle navigation compoundButton item clicks here.
+        int id = view.getId();
+        Fragment fragment = null;
+        Boolean fragmentoSeleccionado = false;
+        switch (id) {
+            case R.id.btn_get_consumo_diario:
+
+                fragment = new ConsumoDiarioFragment();
+                fragmentoSeleccionado = true;
+
+                break;
+            case R.id.btn_get_consumo_hora:
+                fragment = new ConsumoHoraFragment();
+                fragmentoSeleccionado = true;
+                break;
+            default:
+
+        }
+
+        if (fragmentoSeleccionado) {
+
+            getSupportFragmentManager().beginTransaction().
+                    replace(R.id.contenedor_tipo_consumo, fragment).
+                    commit();
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
 }

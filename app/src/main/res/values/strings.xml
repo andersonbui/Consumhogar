@@ -17,5 +17,15 @@
     <string name="delete">Borrar</string>
     <string name="cancel">Cancelar</string>
     <string name="saved_valor_consumo">key_cosnumo</string>
+    <string name="action_sign_in_short">Iniciar sesion</string>
+    <string name="permission_rationale">Contacts permissions are needed for providing email         completions.</string>
+    <string name="error_incorrect_password">usuario o contrasenia incorrecta</string>
+    <string name="error_invalid_password">la contraseña es muy corta</string>
+    <string name="error_field_required">el campo es requerido</string>
+    <string name="error_invalid_user">el usuario es muy corto</string>
+    <string name="login_btn">Iniciar Sesión</string>
+    <string name="forget_password">Si olvidó la contraseña, llame al técnico por favor.</string>
+    <string name="login_pass_hint">Contraseña</string>
+    <string name="login_user_hint">Usuario</string>
 
 </resources>

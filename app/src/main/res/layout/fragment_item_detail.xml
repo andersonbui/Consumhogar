@@ -1,46 +1,35 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/item_detail"
-        style="?android:attr/textAppearanceLarge"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textIsSelectable="true"
-        tools:context="com.andersonbuitron.mipruebathingspeakweb.fragments.ItemDetailFragment" />
+        android:id="@+id/ll_btns_tipo_consumo">
+        <Button
+            android:id="@+id/btn_get_consumo_diario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="diario"
+            android:onClick="onClickItemSelected"
+            android:layout_weight="1"
+            />
+        <Button
+            android:id="@+id/btn_get_consumo_hora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="hora"
+            android:onClick="onClickItemSelected"
+            android:layout_weight="1"
+            />
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/id_detail"
-        style="?android:attr/textAppearanceLarge"
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_below="@+id/ll_btns_tipo_consumo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textIsSelectable="true"
-        tools:context="com.andersonbuitron.mipruebathingspeakweb.fragments.ItemDetailFragment" />
-
-    <Button
-        android:id="@+id/btn_get_ultimo_valor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="ultimo"
-        android:onClick="getUltimoValor"/>
-
-    <Button
-        android:id="@+id/btn_get_consumo_diario"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="diario"
-        android:onClick="getConsumoDiario"/>
-
-    <Button
-        android:id="@+id/btn_get_consumo_mensual"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="mensual"
-        android:onClick="getConsumoMensual"/>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:id="@+id/contenedor_tipo_consumo"
+        >
+    </RelativeLayout>
+</RelativeLayout>

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
@@ -21,7 +20,8 @@ import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
  * in two-pane mode (on tablets) or a {@link //ItemDetailActivity}
  * on handsets.
  */
-public class ItemDetailFragment extends Fragment {
+public class ItemDetailFragment extends Fragment
+        {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -70,11 +70,13 @@ public class ItemDetailFragment extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.item_detail)).setText(mItem.getApi_key_write());
-            ((TextView) rootView.findViewById(R.id.id_detail)).setText(mItem.getId());
+            //((TextView) rootView.findViewById(R.id.item_detail)).setText(mItem.getApi_key_write());
+           // ((TextView) rootView.findViewById(R.id.id_detail)).setText(mItem.getId());
 
         }
 
         return rootView;
     }
+
+
 }

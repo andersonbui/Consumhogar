@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_green_dark"
+    android:background="#fff"
     tools:context="com.andersonbuitron.mipruebathingspeakweb.fragments.DispositivosFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -14,7 +14,6 @@
         android:text="Hello World!"
         android:id="@+id/dispos_registrados_list"
         android:divider="@null"
-        android:listSelector="@color/colorPrimary"
         android:dividerHeight="10dp"
         />
    <!-- <include layout="@layout/item_list" />-->

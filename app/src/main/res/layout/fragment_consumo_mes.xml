@@ -1,0 +1,178 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.andersonbuitron.mipruebathingspeakweb.fragments.ConsumoDiarioFragment">
+
+    <Button
+        android:id="@+id/btn_grafica"
+        android:layout_width="60dp"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="50dp"
+        android:drawableLeft="@drawable/btn_grafica"
+        android:layout_centerHorizontal="true"
+        android:background="@android:drawable/editbox_background"
+        android:onClick="mostrarGraficoDiario"
+
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_general"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/btn_grafica"
+        android:layout_margin="20dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/flecha_izquierda"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_chevron_left"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:id="@+id/view_page_fecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Agosto de 2016"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/flecha_derecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/ic_chevron_right"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_consumo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="19sp"
+            android:text="Consumo"
+            android:textColor="@android:color/background_dark"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="5dp"/>
+
+        <ProgressBar
+            android:id="@+id/simpleProgressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:max="100"
+            android:progress="70"
+            android:progressDrawable="@android:drawable/progress_horizontal"
+            android:layout_marginTop="20dp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="left"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/consumo_actual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@android:color/background_dark"
+                android:text="Consumo Actual:"
+                android:gravity="right"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:layout_marginRight="10dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_consumo_actual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@android:color/background_dark"
+                android:text="150kWh - $70000"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="left"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/consumo_promedio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="13sp"
+                android:textColor="@android:color/background_dark"
+                android:text="Consumo Promedio:"
+                android:gravity="right"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/tv_consumo_promedio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="13sp"
+                android:textColor="@android:color/background_dark"
+                android:text="134kWh - $56000"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/consumo_ahorrado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@android:color/background_dark"
+                android:text="Consumo Ahorrado:"
+                android:gravity="right"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="14dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/tv_consumo_sobrepasado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@android:color/background_dark"
+                android:text="15KWh - $14000"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

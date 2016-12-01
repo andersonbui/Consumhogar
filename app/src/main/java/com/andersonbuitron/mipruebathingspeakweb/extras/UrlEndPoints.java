@@ -14,7 +14,8 @@ public class UrlEndPoints {
      * Local
      */
     public static final String THINGSPEAK_API_KEY = "EP1GTA7CD5X9Z3HQ";
-    public static final String THINGSPEAK_URL = "http://192.168.0.90:3000/";
+    //public static final String THINGSPEAK_URL = "http://192.168.43.29:3000/";
+    public static final String THINGSPEAK_URL = "http://192.168.0.23:3000/";
 
     public static final String THINGSPEAK_API_KEY_STRING = "api_key=";
     public static final String THINGSPEAK_CHANNELS = "channels";
