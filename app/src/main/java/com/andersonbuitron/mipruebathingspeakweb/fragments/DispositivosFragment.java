@@ -1,8 +1,10 @@
 package com.andersonbuitron.mipruebathingspeakweb.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
+import com.andersonbuitron.mipruebathingspeakweb.activities.ListDispositivoDisponiblesActivity;
 import com.andersonbuitron.mipruebathingspeakweb.adaptadores.DispositivoAdapter;
 import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorDispositivos;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
@@ -76,6 +79,8 @@ public class DispositivosFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
@@ -83,6 +88,17 @@ public class DispositivosFragment extends Fragment {
                              Bundle savedInstanceState) {
         Log.i("Informe","entro en onCreateView");
         View root = inflater.inflate(R.layout.fragment_dispositivos, container, false);
+
+        FloatingActionButton fab = (FloatingActionButton) root.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ListDispositivoDisponiblesActivity.class);
+                startActivity(intent);
+
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
+        });
 
         //instancia del listView
         lvDisposRegistradosList = (ListView) root.findViewById(R.id.dispos_registrados_list);

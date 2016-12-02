@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_list_dispositivo_disponibles"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.andersonbuitron.mipruebathingspeakweb.activities.ListDispositivoDisponiblesActivity">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/dispositivos_disponibles_list"
+        android:dividerHeight="@dimen/dimension_pequena"
+        />
+
+</RelativeLayout>

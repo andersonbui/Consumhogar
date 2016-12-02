@@ -7,6 +7,7 @@ import com.andersonbuitron.mipruebathingspeakweb.callbacks.TareaUrl;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -24,6 +25,7 @@ public class ClienteRemoto extends AsyncTask<Void, Void, String> {
     }
 
     protected void onPreExecute() {
+
     }
 
     protected String doInBackground(Void... urls) {
@@ -40,13 +42,19 @@ public class ClienteRemoto extends AsyncTask<Void, Void, String> {
                 }
                 bufferedReader.close();
                 return stringBuilder.toString();
-            } finally {
+            }
+            finally {
                 urlConnection.disconnect();
             }
-        } catch (Exception e) {
+        }catch(ConnectException e){
+            //Toast.makeText(, "", Toast.LENGTH_SHORT).show();
+            Log.e("Servidor","Servidor no encontrado", e);
+        }
+        catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
             return null;
         }
+        return "";
     }
 
     protected void onPostExecute(String resultado) {

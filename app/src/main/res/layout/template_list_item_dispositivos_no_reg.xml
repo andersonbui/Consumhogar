@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:minHeight="?attr/listPreferredItemHeight"
     android:padding="20dp"
+    android:background="@color/colorPrimaryLight"
     >
 
     <TextView

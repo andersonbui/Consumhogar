@@ -65,7 +65,7 @@ public class BDDispositivo {
         mDatabase.endTransaction();
     }
 
-    public ArrayList<Dispositivo> leerCanales() {
+    public ArrayList<Dispositivo> leerDispositivos() {
         ArrayList<Dispositivo> listDispositivo = new ArrayList<>();
 
         //get a list of columns to be retrieved, we need all of them

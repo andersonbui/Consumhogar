@@ -1,0 +1,93 @@
+package com.andersonbuitron.mipruebathingspeakweb.gestores;
+
+import com.andersonbuitron.mipruebathingspeakweb.extras.GraficaBarrras;
+import com.andersonbuitron.mipruebathingspeakweb.modelos.FeedField;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
+/**
+ * Created by debian on 1/12/16.
+ */
+
+public class GestorFeedField {
+
+
+    public static ArrayList<FeedField> ordenarListaFF(ArrayList<FeedField> listaFF) {
+
+        ArrayList<FeedField> lista = new ArrayList<>();
+        int tamaniolistaFF = listaFF.size();
+        if (tamaniolistaFF != 0) {
+            lista.add(listaFF.get(0));
+        }
+        int tamanio_lista = 1;
+        for (int k = 1; k < tamaniolistaFF; k++) {
+            FeedField valoraAInsertar = listaFF.get(k);
+            for (int i = 0; i < tamanio_lista; i++) {
+
+                if (lista.get(i).getValor() > valoraAInsertar.getValor()) {
+                    lista.add(i, valoraAInsertar);
+                    tamanio_lista++;
+                    break;
+                } else if (i == tamanio_lista - 1){
+                    lista.add( valoraAInsertar);
+                    tamanio_lista++;
+                    break;
+                }
+            }
+
+        }
+
+        return lista;
+    }
+
+    public static  ArrayList<GraficaBarrras.ValorLabel> obtenerListaValorLabel(ArrayList<FeedField> listaFF) {
+        ArrayList<GraficaBarrras.ValorLabel> lista = new ArrayList<>();
+        for (FeedField item: listaFF) {
+            float valor = item.getValor().floatValue();
+            DateFormat df = new SimpleDateFormat("dd");
+            String label = df.format(item.getFecha());
+            GraficaBarrras.ValorLabel unV = new GraficaBarrras.ValorLabel(valor,label);
+            lista.add(unV);
+        }
+        return lista;
+    }
+
+    public static  double media(ArrayList<FeedField> listaFF) {
+        ArrayList<Double> lista = new ArrayList<>();
+        int tamaniolistaFF = listaFF.size();
+        if (tamaniolistaFF != 0) {
+            lista.add(listaFF.get(0).getValor());
+        }
+        int tamanio_lista = 1;
+        for (int k = 1; k < tamaniolistaFF; k++) {
+            double valoraAInsertar = listaFF.get(k).getValor();
+            for (int i = 0; i < tamanio_lista; i++) {
+                if (lista.get(i) > valoraAInsertar) {
+                    lista.add(i, valoraAInsertar);
+                    tamanio_lista++;
+                    break;
+                } else if (i == tamanio_lista - 1){
+                    lista.add( valoraAInsertar);
+                    tamanio_lista++;
+                    break;
+                }
+            }
+
+        }
+        if (!lista.isEmpty()) {
+            return lista.get((lista.size() - 1) / 2);
+        }
+        return 0;
+    }
+
+    public static  double promedio(ArrayList<FeedField> listaFF) {
+        double suma = 0;
+        for (FeedField elem : listaFF) {
+            suma += elem.getValor();
+        }
+        return suma / listaFF.size();
+    }
+
+}

@@ -12,7 +12,6 @@ import com.andersonbuitron.mipruebathingspeakweb.R;
 import com.andersonbuitron.mipruebathingspeakweb.callbacks.TareaList;
 import com.andersonbuitron.mipruebathingspeakweb.callbacks.TareaUrl;
 import com.andersonbuitron.mipruebathingspeakweb.database.BDDispositivo;
-import com.andersonbuitron.mipruebathingspeakweb.datos.ClienteRemoto;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.FeedField;
 import com.android.volley.Request;
@@ -129,11 +128,16 @@ public class GestorDispositivos {
             @Override
             public void ejecutar(String resultado) {
                 ArrayList<Dispositivo> canales = (ArrayList<Dispositivo>) parseArrayCanal(resultado);
-                canales = fitrarCanales(canales);
-                actualizarAdaptador(canales);
-                if (canales.isEmpty()) {
-                    Toast.makeText(context, "No hay mas Dispositivos disponibles", Toast.LENGTH_SHORT).show();
+                if(canales == null){
+                    canales = new ArrayList<>();
+                    Toast.makeText(context, "Compruebe su conexion a internet.", Toast.LENGTH_SHORT).show();
+                }else {
+                    canales = fitrarCanales(canales);
+                    if (canales.isEmpty()) {
+                        Toast.makeText(context, "No hay mas Dispositivos disponibles", Toast.LENGTH_SHORT).show();
+                    }
                 }
+                actualizarAdaptador(canales);
             }
 
             @Override
@@ -148,7 +152,7 @@ public class GestorDispositivos {
     public void recuperarDispositivosBaseDatos(ArrayAdapter adapter) {
         this.adapter = adapter;
         BDDispositivo bdcanal = BDDispositivo.getInstance(context);
-        ArrayList listaDispos = bdcanal.leerCanales();
+        ArrayList listaDispos = bdcanal.leerDispositivos();
         actualizarAdaptador(listaDispos);
     }
 
@@ -156,23 +160,23 @@ public class GestorDispositivos {
         this.adapter = adapter;
         BDDispositivo bdcanal = BDDispositivo.getInstance(context);
         bdcanal.deleteCanal(idDispositivo);
-        ArrayList listaDispos = bdcanal.leerCanales();
+        ArrayList listaDispos = bdcanal.leerDispositivos();
         actualizarAdaptador(listaDispos);
     }
 
     public List<Dispositivo> recuperarDispositivosBaseDatos() {
         BDDispositivo bdcanal = BDDispositivo.getInstance(context);
-        ArrayList listaDispos = bdcanal.leerCanales();
+        ArrayList listaDispos = bdcanal.leerDispositivos();
         return listaDispos;
     }
 
     private void realizarSolicitudGET(final TareaUrl tareaUrl) {
 
         //opcion con volley
-        //requestConVolley(tareaUrl);
+        requestConVolley(tareaUrl);
 
         //opcion con asinctask
-        new ClienteRemoto(tareaUrl).execute();
+        //new ClienteRemoto(tareaUrl).execute();
     }
     private void requestConVolley(final TareaUrl tareaUrl){
         String url = tareaUrl.getUrl();
@@ -188,7 +192,9 @@ public class GestorDispositivos {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Error en la solicitud http", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Error en la solicitud http\n revise su conexion o intentelo mas tarde", Toast.LENGTH_LONG).show();
+                        Log.e("Error http","Error en hacer la consulta http. \n"+error.getCause());
+
                     }
                 });
         // Add the request to the RequestQueue.
@@ -461,8 +467,8 @@ public class GestorDispositivos {
     private ArrayList<Dispositivo> fitrarCanales(ArrayList<Dispositivo> canales) {
 
         BDDispositivo bdDispositivo = BDDispositivo.getInstance(context);
-        List<Dispositivo> list_canales = bdDispositivo.leerCanales();
-        if(list_canales != null){
+        List<Dispositivo> list_canales = bdDispositivo.leerDispositivos();
+        if(canales!= null && list_canales != null){
             canales.removeAll(list_canales);
         }
 

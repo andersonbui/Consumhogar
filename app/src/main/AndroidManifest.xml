@@ -4,9 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.READ_PROFILE"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -19,16 +19,13 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name=".activities.AddDispositivoActivity" />
-
         <activity
             android:name=".activities.ItemDetailActivity"
             android:label="@string/title_item_detail"
@@ -37,19 +34,16 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.andersonbuitron.mipruebathingspeakweb.activities.MisDispositivosActivity" />
-
         </activity>
         <activity android:name=".activities.GraficaDiaActivity" />
-        <activity android:name=".activities.ValorConsumoActivity"></activity>
-
+        <activity android:name=".activities.ValorConsumoActivity" />
         <activity
             android:name=".activities.inicioM.SplashScreenActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.inicioM.InicioSesionActivity"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar" />
+        <activity android:name=".activities.ListDispositivoDisponiblesActivity"></activity>
     </application>
 
 </manifest>

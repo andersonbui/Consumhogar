@@ -42,16 +42,6 @@ public class ItemDetailActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_item_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
-/*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_details);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View compoundButton) {
-                Snackbar.make(compoundButton, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
         mDispositivo = (Dispositivo) getIntent().getSerializableExtra(ItemDetailFragment.ARG_ITEM_DISPOSITIVO);
 
@@ -71,12 +61,6 @@ public class ItemDetailActivity extends AppCompatActivity implements
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        // Definir fragment inicial de consumo
-/*
-        getSupportFragmentManager().beginTransaction().
-                replace(R.id.contenedor_tipo_consumo,  new ConsumoDiarioFragment()).
-                commit();
-*/
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
         // (e.g. when rotating the screen from portrait to landscape).
@@ -99,6 +83,12 @@ public class ItemDetailActivity extends AppCompatActivity implements
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.item_detail_container, fragment)
                     .commit();
+
+            // Definir fragment inicial de consumo
+
+            getSupportFragmentManager().beginTransaction().
+                    replace(R.id.contenedor_tipo_consumo,  new ConsumoDiarioFragment()).
+                    commit();
 
         }
     }
@@ -164,9 +154,9 @@ public class ItemDetailActivity extends AppCompatActivity implements
         calendar.set(Calendar.MINUTE,0);
         calendar.set(Calendar.SECOND,0);
         Date finicial = calendar.getTime();
-        String escala = "daily"; //minutos
+        String ESCALA_TIEMPO = "daily"; //minutos
 
-        String url=gestionDis.solicitarValoresDeField(mDispositivo.getApi_key_write(),2,mDispositivo.getId(),finicial,ffinal,escala);
+        String url=gestionDis.solicitarValoresDeField(mDispositivo.getApi_key_write(),2,mDispositivo.getId(),finicial,ffinal,ESCALA_TIEMPO);
 
         Intent intent = new Intent(this,GraficaDiaActivity.class);
         intent.putExtra("url",url);

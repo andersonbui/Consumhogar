@@ -8,16 +8,12 @@
             android:title="Home" />
         <item
             android:id="@+id/nav_set_valor_consumo"
-            android:icon="@drawable/ic_attach_money"
-            android:title="Definir valor de consumo" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_add_box"
-            android:title="Registrar dispositivo" />
+            android:icon="@drawable/ic_settings"
+            android:title="Configuraciones" />
         <item
             android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_settings"
-            android:title="Tools" />
+            android:icon="@drawable/ic_exit"
+            android:title="Cerrar sesion" />
     </group>
 <!--
     <item android:title="Communicate">
