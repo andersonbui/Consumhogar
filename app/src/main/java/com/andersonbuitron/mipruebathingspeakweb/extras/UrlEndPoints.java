@@ -24,6 +24,7 @@ public class UrlEndPoints {
     public static final String THINGSPEAK_FIELDS= "fields";
     public static final String URL_JSON = ".json";
     public static final String URL_CHAR_QUESTION = "?";
+    public static final String URL_RESULTS = "results=";
     public static final String URL_CHAR_AMEPERSAND = "&";
     public static final String THINGSPEAK_SUM = "sum=";
     public static final String THINGSPEAK_START = "start=";

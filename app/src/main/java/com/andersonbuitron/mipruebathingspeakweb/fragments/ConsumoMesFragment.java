@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
 import com.andersonbuitron.mipruebathingspeakweb.activities.GraficaFullScreenActivity;
@@ -34,13 +35,15 @@ import static com.andersonbuitron.mipruebathingspeakweb.gestores.GestorFeedField
 public class ConsumoMesFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_DISPOSITIVO = "dispositivo_seleccionado";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_FECHA = "fecha";
+    private static final String ARG_POSICION = "posicion";
 
 
     //no estaticas
     private Dispositivo dispositivo;
-    private String mParam2;
-    private static final String ESCALA_TIEMPO_MIN = "1440"; /*en minutos*/
+    private Calendar fechaActual;
+    private int posicion;
+    private static final String ESCALA_TIEMPO_MIN = "720"; /*en minutos*/
     BarChart mChart;
     float limiteConsumoDiario = 0;
     private ArrayList<FeedField> listaFeedField;
@@ -52,12 +55,13 @@ public class ConsumoMesFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ConsumoMesFragment newInstance(Dispositivo param1, String param2) {
+    public static ConsumoMesFragment newInstance(Dispositivo param1, Calendar fecha,int position) {
         ConsumoMesFragment fragment = new ConsumoMesFragment();
         Bundle args = new Bundle();
         Log.i( "Dispositivo llegado","dispositivo llegado: "+param1.getId());
         args.putSerializable(ARG_DISPOSITIVO, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_FECHA, fecha);
+        args.putInt(ARG_POSICION, position);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,7 +71,8 @@ public class ConsumoMesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             dispositivo = (Dispositivo) getArguments().getSerializable(ARG_DISPOSITIVO);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            fechaActual = (Calendar) getArguments().getSerializable(ARG_FECHA);
+            posicion = getArguments().getInt(ARG_POSICION);
         }
 
     }
@@ -77,7 +82,7 @@ public class ConsumoMesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_consumo_mes, container, false);
 
-        Calendar fechaActual = Calendar.getInstance();
+        ((TextView)root.findViewById(R.id.tv_consumo)).setText(""+posicion);
         solicitarDatos(fechaActual, root);
         Button btn_fullScreenGrafico = (Button)root.findViewById(R.id.btn_fullScreenGrafico);
         btn_fullScreenGrafico.setOnClickListener(new View.OnClickListener() {

@@ -128,10 +128,10 @@ public class GestorDispositivos {
             @Override
             public void ejecutar(String resultado) {
                 ArrayList<Dispositivo> canales = (ArrayList<Dispositivo>) parseArrayCanal(resultado);
-                if(canales == null){
+                if (canales == null) {
                     canales = new ArrayList<>();
                     Toast.makeText(context, "Compruebe su conexion a internet.", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     canales = fitrarCanales(canales);
                     if (canales.isEmpty()) {
                         Toast.makeText(context, "No hay mas Dispositivos disponibles", Toast.LENGTH_SHORT).show();
@@ -178,7 +178,8 @@ public class GestorDispositivos {
         //opcion con asinctask
         //new ClienteRemoto(tareaString).execute();
     }
-    private void requestConVolley(final TareaString tareaString){
+
+    private void requestConVolley(final TareaString tareaString) {
         String url = tareaString.getString();
         RequestQueue queue = Volley.newRequestQueue(context);
 
@@ -193,7 +194,7 @@ public class GestorDispositivos {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(context, "Error en la solicitud http\n revise su conexion o intentelo mas tarde", Toast.LENGTH_LONG).show();
-                        Log.e("Error http","Error en hacer la consulta http. \n"+error.getCause());
+                        Log.e("Error http", "Error en hacer la consulta http. \n" + error.getCause());
 
                     }
                 });
@@ -201,6 +202,7 @@ public class GestorDispositivos {
         queue.add(stringRequest);
 
     }
+
     private void actualizarAdaptador(ArrayList<Dispositivo> canales) {
         adapter.clear();
         adapter.addAll(canales);
@@ -246,7 +248,7 @@ public class GestorDispositivos {
         realizarSolicitudGET(tarea);
     }
 
-    public void guardarConsumo(int consumoKWh,Activity actividad) {
+    public void guardarConsumo(int consumoKWh, Activity actividad) {
         SharedPreferences sharedPref = actividad.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt(actividad.getString(R.string.saved_valor_consumo), consumoKWh);
@@ -263,12 +265,13 @@ public class GestorDispositivos {
 /*
             SharedPreferences sharedPref = actividad.getPreferences(Context.MODE_PRIVATE);
             valorConsumo = sharedPref.getInt(actividad.getString(R.string.saved_valor_consumo), 0);*/
-        }catch (Exception e){
-            Log.i("leerConsumo","No se encontro el consumo");
+        } catch (Exception e) {
+            Log.i("leerConsumo", "No se encontro el consumo");
         }
 
         return valorConsumo;
     }
+
 
     private class EnviarValorFieldCanal extends TareaString {
 
@@ -322,27 +325,33 @@ public class GestorDispositivos {
         }
     }
 
+
     /**
      * Encargados de solicitar el ultimo idcanal entregado a un field de un canal con su respectivo api_key
      *
      * @param field
      * @param idCanal
      */
-    public void solicitarUltimoValorDeField(final int field, String idCanal, final TareaString callback ) {
+    public void solicitarUltimoValorDeField(final int field, String idCanal, final TareaString callback) {
         //opcion con volley
         final String url = THINGSPEAK_URL + THINGSPEAK_CHANNELS + "/" + idCanal + "/" + THINGSPEAK_FIELDS + "/" + field + "/" + THINGSPEAK_LAST +
                 URL_JSON;
 
-       // callback interno
-        realizarSolicitudGET(new TareaString(){
+        // callback interno
+        realizarSolicitudGET(new TareaString() {
             @Override
             public void ejecutar(String resultado) {
-                try {
-                    JSONObject obj = (JSONObject) new JSONTokener(resultado).nextValue();
-                    String valorf = obj.getString(THINGSPEAK_FIELD+field);
-                    callback.ejecutar(valorf);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (resultado.equals("\"-1\"")) {
+                    callback.ejecutar("0");
+                } else {
+                    Log.i("JSONressult", "["+resultado+"]");
+                    try {
+                        JSONObject obj = (JSONObject) new JSONTokener(resultado).nextValue();
+                        String valorf = obj.getString(THINGSPEAK_FIELD + field);
+                        callback.ejecutar(valorf);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -459,7 +468,7 @@ public class GestorDispositivos {
 
         BDDispositivo bdDispositivo = BDDispositivo.getInstance(context);
         List<Dispositivo> list_canales = bdDispositivo.leerDispositivos();
-        if(canales!= null && list_canales != null){
+        if (canales != null && list_canales != null) {
             canales.removeAll(list_canales);
         }
 

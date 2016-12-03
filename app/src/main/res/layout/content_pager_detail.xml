@@ -14,7 +14,7 @@
         <Button android:id="@+id/goto_first"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/first">
+            android:text="atras">
         </Button>
         <Button
             android:id="@+id/goto_last"
@@ -30,7 +30,7 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="800dp"
+        android:layout_height="600dp"
         android:layout_weight="1">
     </android.support.v4.view.ViewPager>
 

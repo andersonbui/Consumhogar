@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +28,8 @@ import com.andersonbuitron.mipruebathingspeakweb.fragments.ConsumoMesFragment;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.DispositivosFragment;
 import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorDispositivos;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
+
+import java.util.Calendar;
 
 /**
  * An activity representing a single Item detail screen. This
@@ -45,9 +48,12 @@ public class ItemDetailActivity extends AppCompatActivity {
 
     // region manipulacion de FragmentStatePager
 
-    static int num_paginas = 30;
-    MyAdapter mAdapter;
+    private static final int num_paginas = 6;
+    SlidePagerAdapter mAdapter;
     ViewPager mPager;
+    static Context context;
+    Calendar fechaDetalle;
+    int mesFechaAux;// Servira para guardar el mes mostrado en grafico, util para trasladarse al siguiente o el anterior
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +100,7 @@ public class ItemDetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-/           Bundle arguments = new Bundle();
+           Bundle arguments = new Bundle();
             arguments.putSerializable(ARG_ITEM_DISPOSITIVO,
                     getIntent().getSerializableExtra(ARG_ITEM_DISPOSITIVO));
 
@@ -112,7 +118,13 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         }*/
 
-        mAdapter = new MyAdapter(getSupportFragmentManager(), unDispositivo);
+        // Establecer la fecha final del mes actual y defnir el numero de paginas
+        fechaDetalle = Calendar.getInstance();
+
+        //num_paginas = ges
+        mesFechaAux =  fechaDetalle.get(Calendar.MONTH);
+
+        mAdapter = new SlidePagerAdapter(getSupportFragmentManager(), unDispositivo);
 
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
@@ -123,7 +135,7 @@ public class ItemDetailActivity extends AppCompatActivity {
         Button button = (Button) findViewById(R.id.goto_first);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mPager.setCurrentItem(0);
+                mPager.setCurrentItem(mPager.getCurrentItem() - 1);
             }
         });
         button = (Button) findViewById(R.id.goto_last);
@@ -134,25 +146,34 @@ public class ItemDetailActivity extends AppCompatActivity {
         });
     }
 
-    public static class MyAdapter extends FragmentStatePagerAdapter {
+    public  class SlidePagerAdapter extends FragmentStatePagerAdapter {
 
-        Dispositivo unDispositivo;
+        //Dispositivo unDispositivo;
 
-        public MyAdapter(FragmentManager fm, Dispositivo dispositivo) {
+        public SlidePagerAdapter(FragmentManager fm, Dispositivo dispositivo) {
             super(fm);
-            this.unDispositivo = dispositivo;
-        }
-
-        @Override
-        public int getCount() {
-            return num_paginas;
+            //this.unDispositivo = dispositivo;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return ConsumoMesFragment.newInstance(unDispositivo, "");
+            Log.i("Llamando a getItem", "Llamando a getItem()");
+            int posicionDerIzq = num_paginas-1-position;
+            mesFechaAux += posicionDerIzq;
+
+            Calendar fecha = (Calendar) fechaDetalle.clone();
+            fecha.add(Calendar.MONTH,num_paginas-position);
+            Log.i("Calendar","posicion["+(this.getCount())+"]"+" fecha ["+ fecha.getTime().toString()+"]");
+            Toast.makeText(ItemDetailActivity.this, "item: "+mPager.getCurrentItem(), Toast.LENGTH_SHORT).show();
+            return ConsumoMesFragment.newInstance(unDispositivo, fechaDetalle,position);
 
         }
+        @Override
+        public int getCount() {
+            //Log.i("Llamando a cound", "Llamando a getCound()");
+            return num_paginas;
+        }
+
     }
 
     // endregion
@@ -269,7 +290,7 @@ public class ItemDetailActivity extends AppCompatActivity {
                     @Override
                     public void ejecutar(String resultado) {
                         compoundButtonSwitch.setChecked(resultado.equals("1"));
-                        Toast.makeText(context, "ultimo valor: " + resultado, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "ultimo valor: " + resultado, Toast.LENGTH_SHORT).show();
                     }
 
                 }
