@@ -27,5 +27,8 @@
     <string name="forget_password">Si olvidó la contraseña, llame al técnico por favor.</string>
     <string name="login_pass_hint">Contraseña</string>
     <string name="login_user_hint">Usuario</string>
+    <string name="string_field">field</string>
+    <string name="first">primero</string>
+    <string name="last">ultimo</string>
 
 </resources>

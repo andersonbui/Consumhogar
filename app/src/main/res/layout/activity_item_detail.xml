@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -36,28 +36,23 @@
                 android:src="@drawable/ic_toys"
                 android:id="@+id/iv_reg_icono"
                 android:paddingTop="20dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:layout_gravity="center_horizontal"/>
 
             <me.xiaopan.switchbutton.SwitchButton
                 style="@style/item"
                 android:id="@+id/switch_power"
-                android:text=""
                 android:checked="true"
                 android:background="@null"
-                app:withTextInterval="10dp"
                 app:frameDrawable="@drawable/switch_frame"
                 app:stateDrawable="@drawable/selector_switch_state"
                 app:stateMaskDrawable="@drawable/switch_state_mask"
                 app:sliderDrawable="@drawable/selector_switch_slider"
-                android:layout_width="100dp"
+                android:layout_width="70dp"
+                android:layout_marginBottom="@dimen/dimension_pequena"
                 app:layout_anchor="@+id/item_detail_container"
-                app:layout_anchorGravity=""
                 android:layout_marginRight="50dp"
 
-                android:layout_height="55dp"
+                android:layout_height="28dp"
                 android:layout_gravity="end|bottom" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -69,6 +64,11 @@
         android:id="@+id/item_detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+
+        <include
+            layout="@layout/content_pager_detail"/>
+
+        </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

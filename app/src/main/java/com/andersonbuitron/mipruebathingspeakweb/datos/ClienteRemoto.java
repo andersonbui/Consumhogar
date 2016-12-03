@@ -3,7 +3,7 @@ package com.andersonbuitron.mipruebathingspeakweb.datos;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.andersonbuitron.mipruebathingspeakweb.callbacks.TareaUrl;
+import com.andersonbuitron.mipruebathingspeakweb.callbacks.TareaString;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,11 +17,11 @@ import java.net.URL;
 
 public class ClienteRemoto extends AsyncTask<Void, Void, String> {
 
-    TareaUrl tareaUrl;
+    TareaString tareaString;
     private static final String TAG = "UsingThingspeakAPI";
 
-    public ClienteRemoto( TareaUrl tareaUrl) {
-        this.tareaUrl = tareaUrl;
+    public ClienteRemoto( TareaString tareaString) {
+        this.tareaString = tareaString;
     }
 
     protected void onPreExecute() {
@@ -31,7 +31,7 @@ public class ClienteRemoto extends AsyncTask<Void, Void, String> {
     protected String doInBackground(Void... urls) {
         Log.i(TAG, "entro a doInBackground de clienteRemoto\n\n");
         try {
-            URL url = new URL(tareaUrl.getUrl());
+            URL url = new URL(tareaString.getString());
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             try {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
@@ -58,6 +58,6 @@ public class ClienteRemoto extends AsyncTask<Void, Void, String> {
     }
 
     protected void onPostExecute(String resultado) {
-        tareaUrl.ejecutar(resultado);
+        tareaString.ejecutar(resultado);
     }
 }

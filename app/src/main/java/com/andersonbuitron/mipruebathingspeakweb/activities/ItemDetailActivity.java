@@ -1,10 +1,13 @@
 package com.andersonbuitron.mipruebathingspeakweb.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,15 +16,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
 import com.andersonbuitron.mipruebathingspeakweb.adaptadores.DispositivoAdapter;
-import com.andersonbuitron.mipruebathingspeakweb.fragments.ConsumoDiarioFragment;
-import com.andersonbuitron.mipruebathingspeakweb.fragments.ConsumoHoraFragment;
+import com.andersonbuitron.mipruebathingspeakweb.callbacks.TareaString;
+import com.andersonbuitron.mipruebathingspeakweb.fragments.ConsumoMesFragment;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.DispositivosFragment;
-import com.andersonbuitron.mipruebathingspeakweb.fragments.ItemDetailFragment;
 import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorDispositivos;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
 
@@ -31,27 +34,45 @@ import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
  * item details are presented side-by-side with a list of items
  * in a {@link //ItemListActivity}.
  */
-public class ItemDetailActivity extends AppCompatActivity implements
-        ConsumoDiarioFragment.OnFragmentInteractionListener,ConsumoHoraFragment.OnFragmentInteractionListener{
 
-    Dispositivo mDispositivo;
+//public class ItemDetailActivity extends AppCompatActivity implements
+//        ConsumoMesFragment.OnFragmentInteractionListener,ConsumoHoraFragment.OnFragmentInteractionListener{
+public class ItemDetailActivity extends AppCompatActivity {
+
+    Dispositivo unDispositivo;
     CompoundButton compoundButton;
+    public static final String ARG_ITEM_DISPOSITIVO = "dispositivo_selected";
+
+    // region manipulacion de FragmentStatePager
+
+    static int num_paginas = 30;
+    MyAdapter mAdapter;
+    ViewPager mPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_detail);
+
+        //obtener dispositivo
+        unDispositivo = (Dispositivo) getIntent().getSerializableExtra(ARG_ITEM_DISPOSITIVO);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+
+        toolbar.setTitle(unDispositivo.getNombre());
         setSupportActionBar(toolbar);
 
-        mDispositivo = (Dispositivo) getIntent().getSerializableExtra(ItemDetailFragment.ARG_ITEM_DISPOSITIVO);
-
         //comportamiento del switch power
-        compoundButton = ((CompoundButton)findViewById(R.id.switch_power));
+        compoundButton = ((CompoundButton) findViewById(R.id.switch_power));
 
+        //ultimo datos de field 2 para
+        actualizarCompoundButton(compoundButton, unDispositivo.getId(), GestorDispositivos.SWITCH_FIELD, this);
+
+        //comportamiento de conpoundButton
         compoundButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)  {
-                DispositivoAdapter.notificarCambiodeSwitchApagado(isChecked,getApplicationContext(),buttonView,mDispositivo.getApi_key_write());
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                DispositivoAdapter.notificarCambiodeSwitchApagado(isChecked, getApplicationContext(), buttonView, unDispositivo.getApi_key_write());
             }
         });
 
@@ -60,7 +81,6 @@ public class ItemDetailActivity extends AppCompatActivity implements
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
         // (e.g. when rotating the screen from portrait to landscape).
@@ -70,13 +90,13 @@ public class ItemDetailActivity extends AppCompatActivity implements
         //
         // http://developer.android.com/guide/components/fragments.html
         //
-
+/*
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putSerializable(ItemDetailFragment.ARG_ITEM_DISPOSITIVO,
-                    getIntent().getSerializableExtra(ItemDetailFragment.ARG_ITEM_DISPOSITIVO));
+/           Bundle arguments = new Bundle();
+            arguments.putSerializable(ARG_ITEM_DISPOSITIVO,
+                    getIntent().getSerializableExtra(ARG_ITEM_DISPOSITIVO));
 
             ItemDetailFragment fragment = new ItemDetailFragment();
             fragment.setArguments(arguments);
@@ -87,11 +107,56 @@ public class ItemDetailActivity extends AppCompatActivity implements
             // Definir fragment inicial de consumo
 
             getSupportFragmentManager().beginTransaction().
-                    replace(R.id.contenedor_tipo_consumo,  new ConsumoDiarioFragment()).
+                    replace(R.id.contenedor_tipo_consumo,  new ConsumoMesFragment()).
                     commit();
+
+        }*/
+
+        mAdapter = new MyAdapter(getSupportFragmentManager(), unDispositivo);
+
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(mAdapter);
+
+        mPager.setCurrentItem(num_paginas - 1);
+
+        // Watch for button clicks.
+        Button button = (Button) findViewById(R.id.goto_first);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                mPager.setCurrentItem(0);
+            }
+        });
+        button = (Button) findViewById(R.id.goto_last);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                mPager.setCurrentItem(num_paginas - 1);
+            }
+        });
+    }
+
+    public static class MyAdapter extends FragmentStatePagerAdapter {
+
+        Dispositivo unDispositivo;
+
+        public MyAdapter(FragmentManager fm, Dispositivo dispositivo) {
+            super(fm);
+            this.unDispositivo = dispositivo;
+        }
+
+        @Override
+        public int getCount() {
+            return num_paginas;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return ConsumoMesFragment.newInstance(unDispositivo, "");
 
         }
     }
+
+    // endregion
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -103,7 +168,7 @@ public class ItemDetailActivity extends AppCompatActivity implements
                     .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             GestorDispositivos gestorD = GestorDispositivos.getInstance(getApplicationContext());
-                            gestorD.eliminarDispositivo(mDispositivo.getId(), DispositivosFragment.disposRegistradosAdapter);
+                            gestorD.eliminarDispositivo(unDispositivo.getId(), DispositivosFragment.disposRegistradosAdapter);
                             Toast.makeText(getApplicationContext(), "dispositivo borrado ", Toast.LENGTH_SHORT).show();
                             navigateUpTo(new Intent(getApplicationContext(), MisDispositivosActivity.class));
                         }
@@ -114,10 +179,9 @@ public class ItemDetailActivity extends AppCompatActivity implements
                         }
                     });
             // Create the AlertDialog object and return it
-             builder.create().show();
+            builder.create().show();
             return true;
-        }else
-        if (id == android.R.id.home) {
+        } else if (id == android.R.id.home) {
 
             navigateUpTo(new Intent(this, MisDispositivosActivity.class));
             return true;
@@ -132,20 +196,16 @@ public class ItemDetailActivity extends AppCompatActivity implements
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void getUltimoValor(View view) {
-        GestorDispositivos gestionDis = GestorDispositivos.getInstance(getApplicationContext());
-        gestionDis.solicitarUltimoValorDeField(mDispositivo.getApi_key_write(),GestorDispositivos.SWITCH_FIELD,mDispositivo.getId());
-    }
-
+/*
     public void mostrarGraficoDiario(View view) {
 
-        Intent intent = new Intent(getApplicationContext(),GraficaDiaActivity.class);
-        intent.putExtra(GraficaDiaActivity.EXTRA_DISPOSITIVO,mDispositivo);
+        Intent intent = new Intent(getApplicationContext(),GraficaFullScreenActivity.class);
+        intent.putExtra(GraficaFullScreenActivity.EXTRA_DISPOSITIVO,unDispositivo);
         startActivity(intent);
 
     }
 
-    public void getConsumoMensual(View view) {/*
+    public void getConsumoMensual(View view) {
         GestorDispositivos gestionDis = GestorDispositivos.getInstance(getApplicationContext());
         Calendar calendar = Calendar.getInstance();
         Date ffinal  = calendar.getTime();
@@ -156,44 +216,65 @@ public class ItemDetailActivity extends AppCompatActivity implements
         Date finicial = calendar.getTime();
         String ESCALA_TIEMPO = "daily"; //minutos
 
-        String url=gestionDis.solicitarValoresDeField(mDispositivo.getApi_key_write(),2,mDispositivo.getId(),finicial,ffinal,ESCALA_TIEMPO);
+        String url=gestionDis.solicitarValoresDeField(unDispositivo.getApi_key_write(),2,unDispositivo.getId(),finicial,ffinal,ESCALA_TIEMPO);
 
-        Intent intent = new Intent(this,GraficaDiaActivity.class);
+        Intent intent = new Intent(this,GraficaFullScreenActivity.class);
         intent.putExtra("url",url);
-        startActivity(intent);*/
+        startActivity(intent);
+
     }
 
-    public void onClickItemSelected(View view) {
-        // Handle navigation compoundButton item clicks here.
-        int id = view.getId();
-        Fragment fragment = null;
-        Boolean fragmentoSeleccionado = false;
-        switch (id) {
-            case R.id.btn_get_consumo_diario:
-
-                fragment = new ConsumoDiarioFragment();
-                fragmentoSeleccionado = true;
-
-                break;
-            case R.id.btn_get_consumo_hora:
-                fragment = new ConsumoHoraFragment();
-                fragmentoSeleccionado = true;
-                break;
-            default:
-
-        }
-
-        if (fragmentoSeleccionado) {
-
-            getSupportFragmentManager().beginTransaction().
-                    replace(R.id.contenedor_tipo_consumo, fragment).
-                    commit();
-        }
-    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+*/
+
+    /*
+        public void onClickItemSelected(View view) {
+            // Handle navigation compoundButton item clicks here.
+            int id = view.getId();
+            Fragment fragment = null;
+            Boolean fragmentoSeleccionado = false;
+            switch (id) {
+                case R.id.btn_get_consumo_diario:
+
+                    fragment = new ConsumoMesFragment();
+                    fragmentoSeleccionado = true;
+
+                    break;
+                case R.id.btn_get_consumo_hora:
+                    fragment = new ConsumoHoraFragment();
+                    fragmentoSeleccionado = true;
+                    break;
+                default:
+
+            }
+
+            if (fragmentoSeleccionado) {
+
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.contenedor_tipo_consumo, fragment).
+                        commit();
+            }
+        }
+    */
+    public static void actualizarCompoundButton(final CompoundButton compoundButtonSwitch, String idChannel, int field, final Context context) {
+        GestorDispositivos gestionDis = GestorDispositivos.getInstance(context);
+        gestionDis.solicitarUltimoValorDeField(field, idChannel,
+                new TareaString() {
+
+                    @Override
+                    public void ejecutar(String resultado) {
+                        compoundButtonSwitch.setChecked(resultado.equals("1"));
+                        Toast.makeText(context, "ultimo valor: " + resultado, Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+        );
+    }
+
 
 }
