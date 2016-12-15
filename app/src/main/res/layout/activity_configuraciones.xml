@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_opciones"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.andersonbuitron.mipruebathingspeakweb.activities.ConfiguracionesActivity">
+
+    <CheckBox
+        android:id="@+id/cb_servicio_notificacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClickServicoNotificacion"
+        android:text="Servicio de notificacion activo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimension_pequena"
+        android:layout_marginTop="@dimen/dimension_pequena"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/cb_es_limite_determinado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Determinar limite de consumo diario?" />
+
+        <EditText
+            android:id="@+id/et_limite_consumo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ingrese limite de consumo diario"
+            android:layout_marginLeft="@dimen/dimension_media"
+            android:inputType="numberDecimal" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_valor_consumo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ingrese valor del consumo por KWh"
+        android:inputType="number" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/btn_vconsumo_aceptar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClick_aceptar"
+            android:background="@color/colorAccent"
+            android:text="Aceptar" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClick_aceptar"
+            android:text="Cancelar"
+            android:background="@color/colorAccent"
+            android:layout_gravity="end"/>
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/btn_reset_notificaciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="@dimen/dimension_media"
+        android:paddingRight="@dimen/dimension_media"
+        android:onClick="onClickResetNotificaciones"
+        android:text="reiniciar notificaciones"
+        android:background="@color/colorPrimaryLight"/>
+
+</LinearLayout>

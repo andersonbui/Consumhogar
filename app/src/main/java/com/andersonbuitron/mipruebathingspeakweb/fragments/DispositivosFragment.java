@@ -14,7 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
-import com.andersonbuitron.mipruebathingspeakweb.activities.ListDispositivoDisponiblesActivity;
+import com.andersonbuitron.mipruebathingspeakweb.activities.ListDisponiblesActivity;
 import com.andersonbuitron.mipruebathingspeakweb.adaptadores.DispositivoAdapter;
 import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorDispositivos;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
@@ -93,7 +93,12 @@ public class DispositivosFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), ListDispositivoDisponiblesActivity.class);
+                //rev
+                GestorDispositivos objGD = new GestorDispositivos();
+                objGD.AGREGAR = true;
+                //revend
+
+                Intent intent = new Intent(getActivity(), ListDisponiblesActivity.class);
                 startActivity(intent);
 
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();

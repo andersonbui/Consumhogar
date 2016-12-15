@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.andersonbuitron.mipruebathingspeakweb.activities.ItemDetailActivity"
+    tools:context="com.andersonbuitron.mipruebathingspeakweb.activities.DetalleDispositivoActivity"
     tools:ignore="MergeRootFrame">
 
     <android.support.design.widget.AppBarLayout
@@ -31,12 +31,13 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
             <ImageView
+                android:id="@+id/iv_icono"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_toys"
-                android:id="@+id/iv_reg_icono"
                 android:paddingTop="20dp"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_gravity="center_horizontal"
+                tools:src="@drawable/ic_toys"
+                />
 
             <me.xiaopan.switchbutton.SwitchButton
                 style="@style/item"
@@ -50,13 +51,12 @@
                 android:layout_width="70dp"
                 android:layout_marginBottom="@dimen/dimension_pequena"
                 app:layout_anchor="@+id/item_detail_container"
-                android:layout_marginRight="50dp"
+                android:layout_marginRight="100dp"
 
                 android:layout_height="28dp"
                 android:layout_gravity="end|bottom" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
-
 
     </android.support.design.widget.AppBarLayout>
 
@@ -66,9 +66,43 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
-        <include
-            layout="@layout/content_pager_detail"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        </android.support.v4.widget.NestedScrollView>
+            <LinearLayout
+                android:id="@+id/ll_btns_tipo_consumo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_get_consumo_diario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClickItemSelected"
+                    android:text="MES" />
+
+                <Button
+                    android:id="@+id/btn_get_consumo_hora"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClickItemSelected"
+                    android:text="DIA" />
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/contenedor_tipo_consumo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

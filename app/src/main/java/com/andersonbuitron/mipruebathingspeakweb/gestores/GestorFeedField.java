@@ -6,6 +6,8 @@ import com.andersonbuitron.mipruebathingspeakweb.modelos.FeedField;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by debian on 1/12/16.
@@ -42,11 +44,21 @@ public class GestorFeedField {
         return lista;
     }
 
-    public static  ArrayList<GraficaBarrras.ValorLabel> obtenerListaValorLabel(ArrayList<FeedField> listaFF) {
+    public static  ArrayList<GraficaBarrras.ValorLabel> obtenerListaValorLabel(List<FeedField> listaFF,int tipo) {
+        String formato = "";
+        switch(tipo){
+            case Calendar.MONTH:
+                formato = "dd";
+                break;
+            case Calendar.DAY_OF_MONTH:
+                formato = "HH";
+                break;
+        }
+
         ArrayList<GraficaBarrras.ValorLabel> lista = new ArrayList<>();
         for (FeedField item: listaFF) {
             float valor = item.getValor().floatValue();
-            DateFormat df = new SimpleDateFormat("dd");
+            DateFormat df = new SimpleDateFormat(formato);
             String label = df.format(item.getFecha());
             GraficaBarrras.ValorLabel unV = new GraficaBarrras.ValorLabel(valor,label);
             lista.add(unV);
@@ -54,15 +66,15 @@ public class GestorFeedField {
         return lista;
     }
 
-    public static  double media(ArrayList<FeedField> listaFF) {
-        ArrayList<Double> lista = new ArrayList<>();
+    public static  double media(List<GraficaBarrras.ValorLabel> listaFF) {
+        ArrayList<Float> lista = new ArrayList<>();
         int tamaniolistaFF = listaFF.size();
         if (tamaniolistaFF != 0) {
             lista.add(listaFF.get(0).getValor());
         }
         int tamanio_lista = 1;
         for (int k = 1; k < tamaniolistaFF; k++) {
-            double valoraAInsertar = listaFF.get(k).getValor();
+            float valoraAInsertar = listaFF.get(k).getValor();
             for (int i = 0; i < tamanio_lista; i++) {
                 if (lista.get(i) > valoraAInsertar) {
                     lista.add(i, valoraAInsertar);
@@ -82,9 +94,17 @@ public class GestorFeedField {
         return 0;
     }
 
-    public static  double promedio(ArrayList<FeedField> listaFF) {
+    public static float suma(List<GraficaBarrras.ValorLabel> listaFF){
+        float suma = 0;
+        for (GraficaBarrras.ValorLabel elem : listaFF) {
+            suma +=  elem.getValor();
+        }
+        return suma;
+    }
+
+    public static  double promedio(List<GraficaBarrras.ValorLabel> listaFF) {
         double suma = 0;
-        for (FeedField elem : listaFF) {
+        for (GraficaBarrras.ValorLabel elem : listaFF) {
             suma += elem.getValor();
         }
         return suma / listaFF.size();

@@ -1,5 +1,6 @@
 package com.andersonbuitron.mipruebathingspeakweb.extras;
 
+import android.content.Context;
 import android.graphics.Color;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -20,41 +21,68 @@ import static com.github.mikephil.charting.components.YAxis.AxisDependency.RIGHT
  * Created by debian on 1/12/16.
  */
 
-public class GraficaBarrras implements Serializable{
+public class GraficaBarrras implements Serializable {
 
     public static final int ESTILO_UN_COLOR_CON_LINEA_DELIMITADORA = 1;
     public static final int ESTILO_DOS_COLOR_SIN_LINEA_DELIMITADORA = 2;
     public static final int ESTILO_DOS_COLORES_CON_LINEA_DELIMITADORA = 3;
 
-    float limiteConsumoDiario;
-    List<ValorLabel> listaFeedField;
+    float limiteConsumo;
+    List<ValorLabel> listaValorLabel;
     String subtitle;
-    int estilo;
 
-    public GraficaBarrras( float limiteConsumoDiario, List<ValorLabel> listaFeedField, String subtitle, int estilo) {
+    public GraficaBarrras( float limiteConsumo, List<ValorLabel> listaValorLabel, String subtitle) {
 
-        this.limiteConsumoDiario = limiteConsumoDiario;
-        this.listaFeedField = listaFeedField;
+        this.limiteConsumo = limiteConsumo;
+        this.listaValorLabel = listaValorLabel;
         this.subtitle = subtitle;
-        this.estilo = estilo;
+    }
+
+    public GraficaBarrras() {
+        this.limiteConsumo = 0;
+        this.listaValorLabel = new ArrayList<>();
+        this.subtitle = "";
+    }
+
+    public float getLimiteConsumo() {
+        return limiteConsumo;
+    }
+
+    public void setLimiteConsumo(float limiteConsumo) {
+        this.limiteConsumo = limiteConsumo;
+    }
+
+    public List<ValorLabel> getListaValorLabel() {
+        return listaValorLabel;
+    }
+
+    public void setListaValorLabel(List<ValorLabel> listaValorLabel) {
+        this.listaValorLabel = listaValorLabel;
+    }
+
+    public String getSubtitle() {
+        return subtitle;
+    }
+
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
     }
 
     /**
-     *
      * @param mChart
      * @param estilo entero que permite seleccionar estilo de grafico. Posibles valores:
      *               {@link ESTILO_UN_COLOR_CON_LINEA_DELIMITADORA}, {@link ESTILO_DOS_COLOR_SIN_LINEA_DELIMITADORA},
      *               {@link ESTILO_DOS_COLORES_CON_LINEA_DELIMITADORA}
      */
-    public void crearGrafica(BarChart mChart, int estilo, boolean interaccion) {
+    public void crearGrafica(BarChart mChart, int estilo, boolean interaccion,Context context) {
 
         // Eleccion de estilo
         boolean separarColores = false;
-        switch(estilo){
+        switch (estilo) {
             case 3: //separacion por colores con linea delimitadora
                 separarColores = true;
             case 1: //utilizacion de linea delimitadora
-                aplicarDelimitador(mChart,limiteConsumoDiario);
+                aplicarDelimitador(mChart, limiteConsumo);
                 break;
             case 2: //separacion de barra en colores por linea imaginaria
                 separarColores = true;
@@ -65,7 +93,7 @@ public class GraficaBarrras implements Serializable{
         ArrayList<BarEntry> entries = new ArrayList<>();
         ArrayList<String> labels = new ArrayList<String>();
         int i = 0;
-        for (ValorLabel elem : listaFeedField) {
+        for (ValorLabel elem : listaValorLabel) {
             //obtener todos los labels
             labels.add(elem.getLabel());
             //obtener todos los float con el formato [delimitador | valor-delimitador]
@@ -73,9 +101,9 @@ public class GraficaBarrras implements Serializable{
             float valorOriginal = elem.getValor();
             float val1 = valorOriginal;
             float val2 = 0;
-            if (valorOriginal > limiteConsumoDiario && separarColores) {
-                val1 = limiteConsumoDiario;
-                val2 = valorOriginal - limiteConsumoDiario;
+            if (valorOriginal > limiteConsumo && separarColores) {
+                val1 = limiteConsumo;
+                val2 = valorOriginal - limiteConsumo;
             }
             entries.add(new BarEntry(new float[]{val1, val2}, i, "care"));
             i++;
@@ -84,10 +112,10 @@ public class GraficaBarrras implements Serializable{
 
         BarDataSet bardataset = new BarDataSet(entries, "Consumo");
         bardataset.setColors(getColors());
-        if(separarColores){
+        if (separarColores) {
             bardataset.setStackLabels(new String[]{"Normal", "Exceso"});
             //mChart.setBackgroundColor(Color.WHITE);
-        }else{
+        } else {
             //quitar valores de las barras
             bardataset.setDrawValues(false);
             bardataset.setStackLabels(new String[]{"", ""});
@@ -96,11 +124,11 @@ public class GraficaBarrras implements Serializable{
 
         BarData data = new BarData(labels, bardataset);
         // asignar formato de impresion de valores
-        data.setValueFormatter(new MyValueFormatter(limiteConsumoDiario));
+        data.setValueFormatter(new MyValueFormatter(limiteConsumo,context));
 
         // Establecer formato de eje izquierdo
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setValueFormatter(new LeftAxisValueFormatter(200));
+        leftAxis.setValueFormatter(new LeftAxisValueFormatter(context));
 
         // Establecer formato de eje derecho
         YAxis rightAxis = mChart.getAxisRight();
@@ -145,7 +173,7 @@ public class GraficaBarrras implements Serializable{
         mChart.animateY(500);
     }
 
-    private static void aplicarDelimitador(BarChart mChart,float delimitador) {
+    private static void aplicarDelimitador(BarChart mChart, float delimitador) {
 
         //configuracion de linea  delimitadora
         LimitLine limitY = new LimitLine(delimitador, "consumo promedio");

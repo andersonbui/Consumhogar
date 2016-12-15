@@ -3,29 +3,28 @@ package com.andersonbuitron.mipruebathingspeakweb.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
 import com.andersonbuitron.mipruebathingspeakweb.adaptadores.DispositivoAdapter;
 import com.andersonbuitron.mipruebathingspeakweb.callbacks.TareaString;
-import com.andersonbuitron.mipruebathingspeakweb.fragments.ConsumoMesFragment;
+import com.andersonbuitron.mipruebathingspeakweb.extras.ModoDetalle;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.DispositivosFragment;
+import com.andersonbuitron.mipruebathingspeakweb.fragments.ItemDetailFragment;
 import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorDispositivos;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
 
@@ -38,39 +37,44 @@ import java.util.Calendar;
  * in a {@link //ItemListActivity}.
  */
 
-//public class ItemDetailActivity extends AppCompatActivity implements
+//public class DetalleDispositivoActivity extends AppCompatActivity implements
 //        ConsumoMesFragment.OnFragmentInteractionListener,ConsumoHoraFragment.OnFragmentInteractionListener{
-public class ItemDetailActivity extends AppCompatActivity {
+
+public class DetalleDispositivoActivity extends AppCompatActivity {
 
     Dispositivo unDispositivo;
     CompoundButton compoundButton;
     public static final String ARG_ITEM_DISPOSITIVO = "dispositivo_selected";
 
-    // region manipulacion de FragmentStatePager
-
-    private static final int num_paginas = 6;
-    SlidePagerAdapter mAdapter;
-    ViewPager mPager;
-    static Context context;
-    Calendar fechaDetalle;
-    int mesFechaAux;// Servira para guardar el mes mostrado en grafico, util para trasladarse al siguiente o el anterior
+    ImageView iv_icono;
+    //rev
+    Context context;
+    private ImageView iv_reg_icono;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_detail);
-
-        //obtener dispositivo
+        //rev
+        context = this;
+        //obtener barraGraf
         unDispositivo = (Dispositivo) getIntent().getSerializableExtra(ARG_ITEM_DISPOSITIVO);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
 
         toolbar.setTitle(unDispositivo.getNombre());
         setSupportActionBar(toolbar);
+        //rev
+        iv_reg_icono = (ImageView)findViewById(R.id.iv_icono);
+
+        int resourceId =  getResources().getIdentifier(unDispositivo.getIcono(), "drawable", context.getPackageName());
+        Drawable drawable = ContextCompat.getDrawable(this,resourceId);
+        iv_reg_icono.setImageDrawable(drawable);
 
         //comportamiento del switch power
         compoundButton = ((CompoundButton) findViewById(R.id.switch_power));
-
+        // icono del dispositivo
+        iv_icono = (ImageView) findViewById(R.id.iv_icono);
         //ultimo datos de field 2 para
         actualizarCompoundButton(compoundButton, unDispositivo.getId(), GestorDispositivos.SWITCH_FIELD, this);
 
@@ -87,6 +91,7 @@ public class ItemDetailActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
         // (e.g. when rotating the screen from portrait to landscape).
@@ -96,87 +101,14 @@ public class ItemDetailActivity extends AppCompatActivity {
         //
         // http://developer.android.com/guide/components/fragments.html
         //
-/*
-        if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
-           Bundle arguments = new Bundle();
-            arguments.putSerializable(ARG_ITEM_DISPOSITIVO,
-                    getIntent().getSerializableExtra(ARG_ITEM_DISPOSITIVO));
 
-            ItemDetailFragment fragment = new ItemDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.item_detail_container, fragment)
-                    .commit();
-
-            // Definir fragment inicial de consumo
-
-            getSupportFragmentManager().beginTransaction().
-                    replace(R.id.contenedor_tipo_consumo,  new ConsumoMesFragment()).
-                    commit();
-
-        }*/
-
-        // Establecer la fecha final del mes actual y defnir el numero de paginas
-        fechaDetalle = Calendar.getInstance();
-
-        //num_paginas = ges
-        mesFechaAux =  fechaDetalle.get(Calendar.MONTH);
-
-        mAdapter = new SlidePagerAdapter(getSupportFragmentManager(), unDispositivo);
-
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(mAdapter);
-
-        mPager.setCurrentItem(num_paginas - 1);
-
-        // Watch for button clicks.
-        Button button = (Button) findViewById(R.id.goto_first);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-            }
-        });
-        button = (Button) findViewById(R.id.goto_last);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mPager.setCurrentItem(num_paginas - 1);
-            }
-        });
+        ModoDetalle.modo = Calendar.MONTH;
+        Fragment fragment = ItemDetailFragment.newInstance(unDispositivo);
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.contenedor_tipo_consumo, fragment).
+                commit();
     }
 
-    public  class SlidePagerAdapter extends FragmentStatePagerAdapter {
-
-        //Dispositivo unDispositivo;
-
-        public SlidePagerAdapter(FragmentManager fm, Dispositivo dispositivo) {
-            super(fm);
-            //this.unDispositivo = dispositivo;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Log.i("Llamando a getItem", "Llamando a getItem()");
-            int posicionDerIzq = num_paginas-1-position;
-            mesFechaAux += posicionDerIzq;
-
-            Calendar fecha = (Calendar) fechaDetalle.clone();
-            fecha.add(Calendar.MONTH,num_paginas-position);
-            Log.i("Calendar","posicion["+(this.getCount())+"]"+" fecha ["+ fecha.getTime().toString()+"]");
-            Toast.makeText(ItemDetailActivity.this, "item: "+mPager.getCurrentItem(), Toast.LENGTH_SHORT).show();
-            return ConsumoMesFragment.newInstance(unDispositivo, fechaDetalle,position);
-
-        }
-        @Override
-        public int getCount() {
-            //Log.i("Llamando a cound", "Llamando a getCound()");
-            return num_paginas;
-        }
-
-    }
-
-    // endregion
 
 
     @Override
@@ -190,8 +122,8 @@ public class ItemDetailActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             GestorDispositivos gestorD = GestorDispositivos.getInstance(getApplicationContext());
                             gestorD.eliminarDispositivo(unDispositivo.getId(), DispositivosFragment.disposRegistradosAdapter);
-                            Toast.makeText(getApplicationContext(), "dispositivo borrado ", Toast.LENGTH_SHORT).show();
-                            navigateUpTo(new Intent(getApplicationContext(), MisDispositivosActivity.class));
+                            Toast.makeText(getApplicationContext(), "barraGraf borrado ", Toast.LENGTH_SHORT).show();
+                            navigateUpTo(new Intent(getApplicationContext(), ListDispositivosActivity.class));
                         }
                     })
                     .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -202,11 +134,21 @@ public class ItemDetailActivity extends AppCompatActivity {
             // Create the AlertDialog object and return it
             builder.create().show();
             return true;
-        } else if (id == android.R.id.home) {
-
-            navigateUpTo(new Intent(this, MisDispositivosActivity.class));
-            return true;
         }
+        //rev
+        else if (id == R.id.btn_editar_dispositivo)
+        {
+            GestorDispositivos objGD = new GestorDispositivos();
+            objGD.AGREGAR = false;
+            Intent intent = new Intent(context,AddDispositivoActivity.class);
+            intent.putExtra("canal_clickeado", unDispositivo);
+            startActivity(intent);
+        }
+        else if (id == android.R.id.home)
+        {
+            navigateUpTo(new Intent(this, ListDispositivosActivity.class));
+            return true;
+        }//revend
         return super.onOptionsItemSelected(item);
     }
 
@@ -253,7 +195,7 @@ public class ItemDetailActivity extends AppCompatActivity {
 
 */
 
-    /*
+
         public void onClickItemSelected(View view) {
             // Handle navigation compoundButton item clicks here.
             int id = view.getId();
@@ -261,17 +203,18 @@ public class ItemDetailActivity extends AppCompatActivity {
             Boolean fragmentoSeleccionado = false;
             switch (id) {
                 case R.id.btn_get_consumo_diario:
-
-                    fragment = new ConsumoMesFragment();
+                    ModoDetalle.modo = Calendar.MONTH;
+                    fragment = ItemDetailFragment.newInstance(unDispositivo);
                     fragmentoSeleccionado = true;
-
                     break;
+
                 case R.id.btn_get_consumo_hora:
-                    fragment = new ConsumoHoraFragment();
+                    ModoDetalle.modo = Calendar.DAY_OF_MONTH;
+                    fragment = ItemDetailFragment.newInstance(unDispositivo);
                     fragmentoSeleccionado = true;
                     break;
-                default:
 
+                default:
             }
 
             if (fragmentoSeleccionado) {
@@ -281,7 +224,8 @@ public class ItemDetailActivity extends AppCompatActivity {
                         commit();
             }
         }
-    */
+
+
     public static void actualizarCompoundButton(final CompoundButton compoundButtonSwitch, String idChannel, int field, final Context context) {
         GestorDispositivos gestionDis = GestorDispositivos.getInstance(context);
         gestionDis.solicitarUltimoValorDeField(field, idChannel,

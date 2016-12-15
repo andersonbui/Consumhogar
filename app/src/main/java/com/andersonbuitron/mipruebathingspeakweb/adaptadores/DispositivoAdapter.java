@@ -2,22 +2,26 @@ package com.andersonbuitron.mipruebathingspeakweb.adaptadores;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
-import com.andersonbuitron.mipruebathingspeakweb.activities.ItemDetailActivity;
-import com.andersonbuitron.mipruebathingspeakweb.fragments.ItemDetailFragment;
+import com.andersonbuitron.mipruebathingspeakweb.activities.DetalleDispositivoActivity;
 import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorDispositivos;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
 
 import java.util.List;
+
+import static com.andersonbuitron.mipruebathingspeakweb.activities.DetalleDispositivoActivity.ARG_ITEM_DISPOSITIVO;
+import static com.andersonbuitron.mipruebathingspeakweb.activities.DetalleDispositivoActivity.actualizarCompoundButton;
 
 /**
  * Created by debian on 10/11/16.
@@ -45,8 +49,6 @@ public class DispositivoAdapter extends ArrayAdapter<Dispositivo>{
         //obtener inflater
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-
-
         //Existe el view actual?
         if(null == convertView){
             //si no existe, entonces inflarlo con el image_list_view.xml
@@ -55,6 +57,9 @@ public class DispositivoAdapter extends ArrayAdapter<Dispositivo>{
                     parent,
                     false);
             holder = new ViewHolder();
+            //rev
+            holder.icono_reg = (ImageView) convertView.findViewById(R.id.iv_reg_icono);
+            //revend
             holder.nombre = (TextView) convertView.findViewById(R.id.tv_reg_nombre);
             holder.consumo = (TextView) convertView.findViewById(R.id.tv_reg_consumo);
             holder.power = (CompoundButton) convertView.findViewById(R.id.sw_reg_power);
@@ -82,8 +87,8 @@ public class DispositivoAdapter extends ArrayAdapter<Dispositivo>{
             convertView.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, ItemDetailActivity.class);
-                    intent.putExtra(ItemDetailFragment.ARG_ITEM_DISPOSITIVO, getItem(position));
+                    Intent intent = new Intent(context, DetalleDispositivoActivity.class);
+                    intent.putExtra(ARG_ITEM_DISPOSITIVO, getItem(position));
 
                     context.startActivity(intent);
                     Toast.makeText(getContext(), "Dispositivo ["+position+"] seleccionado: "+getItem(position).toString(), Toast.LENGTH_SHORT).show();
@@ -101,8 +106,16 @@ public class DispositivoAdapter extends ArrayAdapter<Dispositivo>{
         //setup
         holder.nombre.setText(dispositivo.getNombre());
         // CALCULAR CONSUMO - TODO
-        holder.consumo.setText("1500kw-$1200");
+        holder.consumo.setText("0.1060kw-$47.7");
+        //ultimo datos de field 2 para
+        actualizarCompoundButton(holder.power, dispositivo.getId(), GestorDispositivos.SWITCH_FIELD, context);
 
+        //rev
+        //Set icon image
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier(dispositivo.getIcono(), "drawable", context.getPackageName());
+        holder.icono_reg.setImageResource(resourceId);
+        //revend
         return convertView;
     }
 
@@ -124,6 +137,8 @@ public class DispositivoAdapter extends ArrayAdapter<Dispositivo>{
     }
 
     static class ViewHolder {
+        //rev
+        ImageView icono_reg;
         TextView nombre;
         TextView consumo;
         CompoundButton power;

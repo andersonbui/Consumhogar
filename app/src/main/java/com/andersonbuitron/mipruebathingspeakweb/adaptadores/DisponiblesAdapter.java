@@ -17,12 +17,12 @@ import java.util.List;
  * Created by debian on 10/11/16.
  */
 
-public class DispositivoNoRegAdapter extends ArrayAdapter<Dispositivo>{
+public class DisponiblesAdapter extends ArrayAdapter<Dispositivo>{
 
     Context context;
     List<Dispositivo> lista_canales;
 
-    public DispositivoNoRegAdapter(Context context, List<Dispositivo> objects) {
+    public DisponiblesAdapter(Context context, List<Dispositivo> objects) {
         super(context, 0, objects); //resource  = 0
         int resource = 0;
         this.context = context;

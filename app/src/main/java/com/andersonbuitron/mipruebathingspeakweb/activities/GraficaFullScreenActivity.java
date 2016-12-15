@@ -10,7 +10,7 @@ import com.github.mikephil.charting.charts.BarChart;
 public class GraficaFullScreenActivity extends Activity {
 
     public static final String EXTRA_GRAFICO = "grafico_barras";
-    GraficaBarrras dispositivo;
+    GraficaBarrras barraGraf;
     BarChart mChart;
 
     @Override
@@ -18,13 +18,10 @@ public class GraficaFullScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grafica_full_screen);
 
-
-        dispositivo = (GraficaBarrras) getIntent().getSerializableExtra(EXTRA_GRAFICO);
+        barraGraf = (GraficaBarrras) getIntent().getSerializableExtra(EXTRA_GRAFICO);
         mChart = (BarChart) findViewById(R.id.barchart);
-        dispositivo.crearGrafica(mChart,GraficaBarrras.ESTILO_DOS_COLOR_SIN_LINEA_DELIMITADORA,true);
+        barraGraf.crearGrafica(mChart,GraficaBarrras.ESTILO_DOS_COLOR_SIN_LINEA_DELIMITADORA,true,getApplicationContext());
 
     }
-
-
 
 }

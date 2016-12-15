@@ -15,12 +15,12 @@ import java.net.URL;
  * Created by debian on 16/11/16.
  */
 
-public class ClienteRemoto extends AsyncTask<Void, Void, String> {
+public class ClienteHttpNativo extends AsyncTask<Void, Void, String> {
 
     TareaString tareaString;
     private static final String TAG = "UsingThingspeakAPI";
 
-    public ClienteRemoto( TareaString tareaString) {
+    public ClienteHttpNativo(TareaString tareaString) {
         this.tareaString = tareaString;
     }
 

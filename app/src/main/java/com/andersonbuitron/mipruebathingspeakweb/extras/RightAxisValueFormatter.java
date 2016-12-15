@@ -16,6 +16,6 @@ public class RightAxisValueFormatter implements YAxisValueFormatter
 
     @Override
     public String getFormattedValue(float value, YAxis yAxis) {
-        return  mFormat.format(value)+" KWh";
+        return  mFormat.format(value/1000)+" KWh";
     }
 }

@@ -40,14 +40,16 @@
         <TextView
             android:id="@+id/tvTexto_Icono"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dimension_height_spinner"
+            android:textSize="20dp"
             android:text="Icono" />
 
         <Spinner
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dimension_height_spinner"
             android:layout_alignBottom="@+id/tvTexto_Icono"
             android:layout_toRightOf="@+id/tvTexto_Icono"
+            android:layout_marginLeft="20dp"
             android:id="@+id/spinner_icono"/>
 
         <ImageView

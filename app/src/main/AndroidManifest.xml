@@ -16,38 +16,41 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.MisDispositivosActivity"
+            android:name=".activities.ListDispositivosActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".activities.AddDispositivoActivity" />
         <activity
-            android:name=".activities.ItemDetailActivity"
+            android:name=".activities.DetalleDispositivoActivity"
             android:label="@string/title_item_detail"
-            android:parentActivityName=".activities.MisDispositivosActivity"
+            android:parentActivityName=".activities.ListDispositivosActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.andersonbuitron.mipruebathingspeakweb.activities.MisDispositivosActivity" />
+                android:value="com.andersonbuitron.mipruebathingspeakweb.activities.ListDispositivosActivity" />
         </activity>
         <activity
             android:name=".activities.GraficaFullScreenActivity"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
             />
-        <activity android:name=".activities.ValorConsumoActivity" />
+        <activity android:name=".activities.ConfiguracionesActivity" />
         <activity
-            android:name=".activities.inicioM.SplashScreenActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".activities.SplashScreenActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
         <activity
-            android:name=".activities.inicioM.InicioSesionActivity"
+            android:name=".activities.InicioSesionActivity"
             android:theme="@style/NoActionBar" />
-        <activity android:name=".activities.ListDispositivoDisponiblesActivity"></activity>
+        <activity android:name=".activities.ListDisponiblesActivity"></activity>
+        <service android:name=".servicios.ServicioNotificacion" android:enabled="true"/>
     </application>
 
 </manifest>

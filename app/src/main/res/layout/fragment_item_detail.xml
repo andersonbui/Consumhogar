@@ -3,33 +3,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/ll_btns_tipo_consumo">
-        <Button
-            android:id="@+id/btn_get_consumo_diario"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="diario"
-            android:onClick="onClickItemSelected"
-            android:layout_weight="1"
-            />
-        <Button
-            android:id="@+id/btn_get_consumo_hora"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="hora"
-            android:onClick="onClickItemSelected"
-            android:layout_weight="1"
-            />
+        android:layout_below="@+id/ll_btns_tipo_consumo">
 
-    </LinearLayout>
-    <RelativeLayout
-        android:layout_below="@+id/ll_btns_tipo_consumo"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/contenedor_tipo_consumo"
-        >
-    </RelativeLayout>
+
+        <include layout="@layout/content_pager_detail" />
+
+
+    </FrameLayout>
+
 </RelativeLayout>

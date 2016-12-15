@@ -9,14 +9,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
 import com.andersonbuitron.mipruebathingspeakweb.activities.GraficaFullScreenActivity;
-import com.andersonbuitron.mipruebathingspeakweb.activities.MisDispositivosActivity;
-import com.andersonbuitron.mipruebathingspeakweb.callbacks.TareaList;
+import com.andersonbuitron.mipruebathingspeakweb.activities.ListDispositivosActivity;
 import com.andersonbuitron.mipruebathingspeakweb.extras.GraficaBarrras;
-import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorDispositivos;
+import com.andersonbuitron.mipruebathingspeakweb.extras.ModoDetalle;
+import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorConsumo;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.FeedField;
 import com.github.mikephil.charting.charts.BarChart;
@@ -25,12 +26,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import static com.andersonbuitron.mipruebathingspeakweb.gestores.GestorFeedField.media;
-import static com.andersonbuitron.mipruebathingspeakweb.gestores.GestorFeedField.obtenerListaValorLabel;
-
 
 public class ConsumoMesFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,14 +36,12 @@ public class ConsumoMesFragment extends Fragment {
 
     //no estaticas
     private Dispositivo dispositivo;
-    private Calendar fechaActual;
+    private Calendar fecha;
     private int posicion;
-    private static final String ESCALA_TIEMPO_MIN = "720"; /*en minutos*/
     BarChart mChart;
-    float limiteConsumoDiario = 0;
-    private ArrayList<FeedField> listaFeedField;
+    private final ArrayList<FeedField> listaFeedField = new ArrayList<>();
     //boton fullscreen para la grafica
-    Button btn_fullScreenGrafico;
+    //Button btn_fullScreenGrafico;
     GraficaBarrras gbarras;
 
     public ConsumoMesFragment() {
@@ -71,10 +64,9 @@ public class ConsumoMesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             dispositivo = (Dispositivo) getArguments().getSerializable(ARG_DISPOSITIVO);
-            fechaActual = (Calendar) getArguments().getSerializable(ARG_FECHA);
+            fecha = (Calendar) getArguments().getSerializable(ARG_FECHA);
             posicion = getArguments().getInt(ARG_POSICION);
         }
-
     }
 
     @Override
@@ -82,8 +74,18 @@ public class ConsumoMesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_consumo_mes, container, false);
 
-        ((TextView)root.findViewById(R.id.tv_consumo)).setText(""+posicion);
-        solicitarDatos(fechaActual, root);
+        DateFormat df = new SimpleDateFormat(getFormatoTitulo());
+        ((TextView)root.findViewById(R.id.tv_consumo)).setText(""+df.format(fecha.getTime()));
+
+        mChart = (BarChart) root.findViewById(R.id.barchart);
+        gbarras = new GraficaBarrras();
+        GestorConsumo.Holder holder = new GestorConsumo.Holder();
+        holder.pbar_consumoTotal = (ProgressBar) root.findViewById(R.id.pbar_consumoTotal);
+        holder.Consumo_diferencia = (TextView) root.findViewById(R.id.tv_consumo_diferencia);
+        holder.consumo_promedio = (TextView) root.findViewById(R.id.tv_consumo_promedio);
+        holder.consumo_total = (TextView) root.findViewById(R.id.tv_consumo_total);
+
+        GestorConsumo.getInstance(getContext()).rellenarGraficaBarras(listaFeedField,mChart,dispositivo, fecha,Calendar.DAY_OF_MONTH,gbarras,holder);
         Button btn_fullScreenGrafico = (Button)root.findViewById(R.id.btn_fullScreenGrafico);
         btn_fullScreenGrafico.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,74 +97,23 @@ public class ConsumoMesFragment extends Fragment {
         });
         return root;
     }
-    // grafico configuracion grafico de barras
 
-    public void solicitarDatos(Calendar fechaCal, final View v) {
-        //-----
-        int anio = fechaCal.get(Calendar.YEAR);
-        int mes = fechaCal.get(Calendar.MONTH);
-        int dia = fechaCal.get(Calendar.DAY_OF_MONTH);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(anio, mes - 1, 0);
-        Date finicial = calendar.getTime();
-
-        calendar.set(anio, mes, dia + 1);
-        Date ffinal = calendar.getTime();
-
-        listaFeedField = new ArrayList();
-        TareaList nuevaTarea = new TareaList() {
-            @Override
-            public void ejecutar(ArrayList<FeedField> listaFF) {
-                listaFeedField = listaFF;
-                if (listaFeedField == null) {
-                    listaFeedField = new ArrayList<>();
-                }
-                //Toast.makeText(getApplicationContext(), "listaFeedField: "+listaFeedField.toString(), Toast.LENGTH_LONG).show();
-                limiteConsumoDiario = (float) calcularLimiteCondumoDiario(listaFeedField);
-                mChart = (BarChart) v.findViewById(R.id.barchart);
-                List<GraficaBarrras.ValorLabel> listavalores = obtenerListaValorLabel(listaFeedField);
-
-                String mes = "mes: " + obtenerNombreMes(listaFeedField);
-
-                gbarras = new GraficaBarrras( limiteConsumoDiario, listavalores, mes,1);
-                gbarras.crearGrafica(mChart,GraficaBarrras.ESTILO_UN_COLOR_CON_LINEA_DELIMITADORA,false);
-            }
-
-            @Override
-            public List getList() {
-                return listaFeedField;
-            }
-        };
-
-        GestorDispositivos gestionDis = GestorDispositivos.getInstance(getActivity());
-        gestionDis.solicitarValoresDeField(dispositivo.getApi_key_write(), GestorDispositivos.VALUE_FIELD_NUMBER, dispositivo.getId(), finicial, ffinal, ESCALA_TIEMPO_MIN, nuevaTarea);
-
-    }
-
-    public String obtenerNombreMes(ArrayList<FeedField> listaFF) {
-        DateFormat df = new SimpleDateFormat("MMMM");
-
-        if (listaFF.size() > 0) {
-            return df.format(listaFF.get(0).getFecha());
+    public String getFormatoTitulo(){
+        switch (ModoDetalle.modo){
+            case Calendar.MONTH:
+                return "MMMM' de 'yyyy";
+            case Calendar.DAY_OF_MONTH:
+                return "dd' de 'MMMM' de 'yyyy";
         }
-        return "-";
-    }
-
-    public double calcularLimiteCondumoDiario(ArrayList<FeedField> listaFF) {
-
-        if (listaFF == null) {
-            return 0;
-        }
-        return media(listaFF);
+        return "yyyy";
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (item.getItemId() == android.R.id.home) {
-            Intent intent = new Intent(getActivity(), MisDispositivosActivity.class);
+        if (id == android.R.id.home) {
+            Intent intent = new Intent(getActivity(), ListDispositivosActivity.class);
             startActivity(intent);
         }
 

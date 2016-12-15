@@ -18,11 +18,12 @@ import com.andersonbuitron.mipruebathingspeakweb.R;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.DispositivosFragment;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.VerdeFragment;
 
-public class MisDispositivosActivity extends AppCompatActivity
+public class ListDispositivosActivity extends AppCompatActivity
         implements
         NavigationView.OnNavigationItemSelectedListener,
         VerdeFragment.OnFragmentInteractionListener,
         DispositivosFragment.OnFragmentInteractionListener {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +133,7 @@ public class MisDispositivosActivity extends AppCompatActivity
 
                 break;
             case R.id.nav_set_valor_consumo:
-                Intent intent =  new Intent(this,ValorConsumoActivity.class);
+                Intent intent =  new Intent(this,ConfiguracionesActivity.class);
                 startActivity(intent);
                 break;
             case R.id.nav_manage:

@@ -4,7 +4,7 @@
     android:id="@+id/activity_list_dispositivo_disponibles"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.andersonbuitron.mipruebathingspeakweb.activities.ListDispositivoDisponiblesActivity">
+    tools:context="com.andersonbuitron.mipruebathingspeakweb.activities.ListDisponiblesActivity">
 
     <!-- TODO: Update blank fragment layout -->
     <ListView

@@ -1,38 +1,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="4dip"
-    android:gravity="center_horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="4dip">
 
-    <FrameLayout android:orientation="horizontal"
-        android:measureWithLargestChild="true"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0">
+        android:layout_weight="0"
+        android:measureWithLargestChild="true"
+        android:orientation="horizontal">
 
-        <Button android:id="@+id/goto_first"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="atras">
-        </Button>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="600dp"
+            android:importantForAccessibility="no"
+            />
+
+        <Button
+            android:id="@+id/btn_flecha_izquierda"
+            android:layout_width="40dp"
+            android:layout_height="@dimen/height_button_today"
+            android:background="@drawable/ic_chevron_left" />
+
+        <Button
+            android:id="@+id/btn_flecha_derecha"
+            android:layout_width="40dp"
+            android:layout_height="@dimen/height_button_today"
+            android:layout_gravity="right"
+            android:layout_marginRight="35dp"
+            android:layout_weight="1"
+            android:background="@drawable/ic_chevron_right" />
+
         <Button
             android:id="@+id/goto_last"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@drawable/ic_today_35"
+            android:layout_width="@dimen/height_button_today"
+            android:layout_height="@dimen/height_button_today"
             android:layout_gravity="right"
             android:layout_marginTop="0dp"
-            >
-        </Button>
+            android:background="@drawable/ic_today_35" />
+
     </FrameLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="600dp"
-        android:layout_weight="1">
-    </android.support.v4.view.ViewPager>
 
 
 </LinearLayout>

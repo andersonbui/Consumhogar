@@ -14,11 +14,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
-import com.andersonbuitron.mipruebathingspeakweb.activities.ItemDetailActivity;
+import com.andersonbuitron.mipruebathingspeakweb.activities.DetalleDispositivoActivity;
 import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorDispositivos;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
 
 import java.util.List;
+
+import static com.andersonbuitron.mipruebathingspeakweb.activities.DetalleDispositivoActivity.ARG_ITEM_DISPOSITIVO;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -178,8 +180,8 @@ public class VerdeFragment extends Fragment {
                                 .commit();*/
                     } else {
                         Context context = v.getContext();
-                        Intent intent = new Intent(context, ItemDetailActivity.class);
-                        intent.putExtra(ItemDetailFragment.ARG_ITEM_DISPOSITIVO, holder.mItem.getId());
+                        Intent intent = new Intent(context, DetalleDispositivoActivity.class);
+                        intent.putExtra(ARG_ITEM_DISPOSITIVO, holder.mItem.getId());
 
                         context.startActivity(intent);
                     }

@@ -11,14 +11,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
-import com.andersonbuitron.mipruebathingspeakweb.adaptadores.DispositivoNoRegAdapter;
+import com.andersonbuitron.mipruebathingspeakweb.adaptadores.DisponiblesAdapter;
 import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorDispositivos;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListDispositivoDisponiblesActivity extends AppCompatActivity {
+public class ListDisponiblesActivity extends AppCompatActivity {
 
     //ista de elementos
     ListView vCanalesList;
@@ -41,7 +41,7 @@ public class ListDispositivoDisponiblesActivity extends AppCompatActivity {
         vCanalesList = (ListView) findViewById(R.id.dispositivos_disponibles_list);
 
         //inicializa el adaptador con la fuente de datos
-        mCanalesAdapter = new DispositivoNoRegAdapter(context,list_canales);
+        mCanalesAdapter = new DisponiblesAdapter(context,list_canales);
         GestorDispositivos.getInstance(context).obtenerDispositivosEn(mCanalesAdapter);
 
         //relacionando la lista con el adaptador
