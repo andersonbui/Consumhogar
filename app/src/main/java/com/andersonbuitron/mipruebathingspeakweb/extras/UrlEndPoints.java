@@ -17,8 +17,9 @@ public class UrlEndPoints {
      */
     public static final String THINGSPEAK_API_KEY = "EP1GTA7CD5X9Z3HQ";
     //public static final String THINGSPEAK_URL = "http://192.168.43.29:3000/";
-    public static final String THINGSPEAK_URL = "http://192.168.0.25:3000/";
-
+    public static final String THINGSPEAK_URL = "http://192.168.0.90:3000/";
+    public static final int FIELD_DE_VALORES_CONSUMO = 2;
+    public static final int ESCALA_SOLICITUD_DATOS = 60;
     public static final String THINGSPEAK_API_KEY_STRING = "api_key=";
     public static final String THINGSPEAK_CHANNELS = "channels";
     public static final String THINGSPEAK_UPDATE = "update";
@@ -34,9 +35,45 @@ public class UrlEndPoints {
     public static final String THINGSPEAK_LAST = "last";
     public static final String THINGSPEAK_TIMEZONE = "&timezone=America%2FBogota";
 
-    public static Calendar corregirfecha(Calendar fechain){
-        Calendar fecha = (Calendar) fechain.clone();
-        fecha.add(Calendar.HOUR_OF_DAY,5);
+    public static Calendar configurarInicioFecha(Calendar fecha, int tipo) {
+        switch (tipo) {
+            case Calendar.YEAR:
+                fecha.set(Calendar.MONTH, 0);
+            case Calendar.MONTH:
+                fecha.set(Calendar.DAY_OF_MONTH, 1);
+            case Calendar.DAY_OF_MONTH:
+                fecha.set(Calendar.HOUR_OF_DAY, 0);
+            case Calendar.HOUR_OF_DAY:
+                fecha.set(Calendar.MINUTE, 0);
+            default:
+                fecha.set(Calendar.SECOND, 0);
+                fecha.set(Calendar.MILLISECOND, 1);
+        }
+        return fecha;
+    }
+
+    /**
+     * linpia la fecha a partir de un campo dentro de una fecha definida po tipo
+     *
+     * @param fecha
+     * @param tipo
+     * @return
+     */
+    public static Calendar configurarFinFecha(Calendar fecha, int tipo) {
+        switch (tipo) {
+            case Calendar.YEAR:
+                fecha.set(Calendar.MONTH, fecha.getActualMaximum(Calendar.MONTH));
+            case Calendar.MONTH:
+                fecha.set(Calendar.DAY_OF_MONTH, fecha.getActualMaximum(Calendar.DAY_OF_MONTH));
+            case Calendar.DAY_OF_MONTH:
+                fecha.set(Calendar.HOUR_OF_DAY, 23);
+            case Calendar.HOUR_OF_DAY:
+                fecha.set(Calendar.MINUTE, 59);
+            default:
+                fecha.set(Calendar.SECOND, 59);
+                fecha.set(Calendar.MILLISECOND, 0);
+        }
+
         return fecha;
     }
 }

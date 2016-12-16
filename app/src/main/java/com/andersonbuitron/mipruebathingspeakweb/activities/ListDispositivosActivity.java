@@ -16,14 +16,11 @@ import android.view.MenuItem;
 
 import com.andersonbuitron.mipruebathingspeakweb.R;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.DispositivosFragment;
-import com.andersonbuitron.mipruebathingspeakweb.fragments.VerdeFragment;
 
 public class ListDispositivosActivity extends AppCompatActivity
         implements
         NavigationView.OnNavigationItemSelectedListener,
-        VerdeFragment.OnFragmentInteractionListener,
         DispositivosFragment.OnFragmentInteractionListener {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +124,6 @@ public class ListDispositivosActivity extends AppCompatActivity
                     Log.i("toarray", "" + getSupportFragmentManager().getFragments().get(0));
                     getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().getFragments().get(0)).commit();
                 }*/
-
                 fragment = new DispositivosFragment();
                 fragmentoSeleccionado = true;
 
@@ -137,13 +133,8 @@ public class ListDispositivosActivity extends AppCompatActivity
                 startActivity(intent);
                 break;
             case R.id.nav_manage:
-                fragment = new VerdeFragment();
-                fragmentoSeleccionado = true;
-                break;/*
-            case R.id.nav_share:
+                finish();
                 break;
-            case R.id.nav_send:
-                break;*/
             default:
 
         }

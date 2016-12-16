@@ -27,7 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class ConsumoMesFragment extends Fragment {
+public class ConsumoDetallesFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_DISPOSITIVO = "dispositivo_seleccionado";
     private static final String ARG_FECHA = "fecha";
@@ -44,12 +44,12 @@ public class ConsumoMesFragment extends Fragment {
     //Button btn_fullScreenGrafico;
     GraficaBarrras gbarras;
 
-    public ConsumoMesFragment() {
+    public ConsumoDetallesFragment() {
         // Required empty public constructor
     }
 
-    public static ConsumoMesFragment newInstance(Dispositivo param1, Calendar fecha,int position) {
-        ConsumoMesFragment fragment = new ConsumoMesFragment();
+    public static ConsumoDetallesFragment newInstance(Dispositivo param1, Calendar fecha, int position) {
+        ConsumoDetallesFragment fragment = new ConsumoDetallesFragment();
         Bundle args = new Bundle();
         Log.i( "Dispositivo llegado","dispositivo llegado: "+param1.getId());
         args.putSerializable(ARG_DISPOSITIVO, param1);
@@ -79,13 +79,15 @@ public class ConsumoMesFragment extends Fragment {
 
         mChart = (BarChart) root.findViewById(R.id.barchart);
         gbarras = new GraficaBarrras();
+
         GestorConsumo.Holder holder = new GestorConsumo.Holder();
         holder.pbar_consumoTotal = (ProgressBar) root.findViewById(R.id.pbar_consumoTotal);
         holder.Consumo_diferencia = (TextView) root.findViewById(R.id.tv_consumo_diferencia);
         holder.consumo_promedio = (TextView) root.findViewById(R.id.tv_consumo_promedio);
         holder.consumo_total = (TextView) root.findViewById(R.id.tv_consumo_total);
 
-        GestorConsumo.getInstance(getContext()).rellenarGraficaBarras(listaFeedField,mChart,dispositivo, fecha,Calendar.DAY_OF_MONTH,gbarras,holder);
+        GestorConsumo.getInstance(getContext()).rellenarGraficaBarras(listaFeedField, mChart, dispositivo, fecha, ModoDetalle.modo,gbarras,holder);
+
         Button btn_fullScreenGrafico = (Button)root.findViewById(R.id.btn_fullScreenGrafico);
         btn_fullScreenGrafico.setOnClickListener(new View.OnClickListener() {
             @Override

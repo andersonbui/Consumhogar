@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.andersonbuitron.mipruebathingspeakweb.extras.UrlEndPoints.configurarFinFecha;
+import static com.andersonbuitron.mipruebathingspeakweb.extras.UrlEndPoints.configurarInicioFecha;
 import static com.andersonbuitron.mipruebathingspeakweb.gestores.GestorFeedField.obtenerListaValorLabel;
 
 
@@ -108,8 +110,8 @@ public class ServicioNotificacion extends Service {
                     verificarConsumo();
                 } else {
                     Log.i("fechaUtimaNoti", "" + fechaUtimaNoti.getTime());
-                    fechaActual = GestorConsumo.configurarFinFecha(fechaActual, Calendar.DAY_OF_MONTH);
-                    fechaUtimaNoti = GestorConsumo.configurarFinFecha(fechaUtimaNoti, Calendar.DAY_OF_MONTH);
+                    fechaActual = configurarFinFecha(fechaActual, Calendar.DAY_OF_MONTH);
+                    fechaUtimaNoti = configurarFinFecha(fechaUtimaNoti, Calendar.DAY_OF_MONTH);
 
                     if (!fechaActual.equals(fechaUtimaNoti)) {
                         verificarConsumo();
@@ -124,7 +126,6 @@ public class ServicioNotificacion extends Service {
 
             List<Dispositivo> listaDispositivos = gestorDispositivos.recuperarDispositivosBaseDatos();
 
-
             for ( Dispositivo elem : listaDispositivos) {
                 unDispositivoNotifi = elem;
 
@@ -134,7 +135,7 @@ public class ServicioNotificacion extends Service {
                     e.printStackTrace();
                 }
                 Calendar fechaInicio = Calendar.getInstance();
-                fechaInicio = GestorConsumo.configurarInicioFecha(fechaInicio, Calendar.MONTH);
+                fechaInicio = configurarInicioFecha(fechaInicio, Calendar.MONTH);
                 Calendar fechaFin = Calendar.getInstance();
                 String escala = "720";
 
@@ -166,12 +167,8 @@ public class ServicioNotificacion extends Service {
                         }
                     }
 
-                    @Override
-                    public List getList() {
-                        return new ArrayList<FeedField>();
-                    }
                 };
-                gestorDispositivos.solicitarValoresDeField(elem.getApi_key_write(), GestorDispositivos.VALUE_FIELD_NUMBER, elem.getId(), fechaInicio, fechaFin, escala, unaTarea);
+                gestorDispositivos.solicitarValoresDeField(GestorDispositivos.VALUE_FIELD_NUMBER, elem.getId(), fechaInicio, fechaFin, Calendar.DAY_OF_MONTH, unaTarea);
             }
 
 

@@ -24,6 +24,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.andersonbuitron.mipruebathingspeakweb.extras.UrlEndPoints.configurarFinFecha;
+import static com.andersonbuitron.mipruebathingspeakweb.extras.UrlEndPoints.configurarInicioFecha;
 import static com.andersonbuitron.mipruebathingspeakweb.gestores.GestorFeedField.obtenerListaValorLabel;
 import static com.andersonbuitron.mipruebathingspeakweb.gestores.GestorFeedField.promedio;
 import static com.andersonbuitron.mipruebathingspeakweb.gestores.GestorFeedField.suma;
@@ -54,21 +56,6 @@ public class GestorConsumo {
         gestorConsumo.context = context;
         return gestorConsumo;
     }
-
-    private Calendar getInicioIntervaloTiempo(Calendar cal, int field) {
-        Calendar fecha = (Calendar) cal.clone();
-        Calendar fec = GestorConsumo.configurarInicioFecha(fecha, field);
-        Log.i("Intervalo tiempo inicio", fec.getTime().toString());
-        return fec;
-    }
-
-    private Calendar getFinIntervaloTiempo(Calendar cal, int field) {
-        Calendar fecha = (Calendar) cal.clone();
-        Calendar fec = GestorConsumo.configurarFinFecha(fecha, field);
-        Log.i("Intervalo tiempo Fin", fec.getTime().toString());
-        return fec;
-    }
-    // grafico configuracion grafico de barras
 
     private Date getInicioIntervaloTiempo2(final Calendar fecha, int field) {
         //Calendar fecha = (Calendar) cal.clone();
@@ -130,34 +117,32 @@ public class GestorConsumo {
      * @param fechaCal
      * @param tipo     de tipo Calendar.DAY_OF_MONTH, Calendar.MONTH o Calendar.HOUR_OF_DAY
      */
-    public void rellenarGraficaBarras(final List<FeedField> listaFeedField, final BarChart mChart,
+    public void rellenarGraficaBarras(final List<FeedField> listaFeedFielddd, final BarChart mChart,
                                       final Dispositivo dispositivo, final Calendar fechaCal,
                                       final int tipo, final GraficaBarrras gbarras, final Holder holder) {
 
         // listaFeedField = new ArrayList();
-        int campo = 0; // indicador del tipo de
-        int escalaDeTiempo = 0;
         final String[] tituloGrafico = {""};
-        campo = tipo;
 
         switch (tipo) {
             case Calendar.MONTH:
-                escalaDeTiempo = 1440;
                 tituloGrafico[0] = "MES: " + obtenerNombreMes(fechaCal.getTime());
                 break;
             case Calendar.DAY_OF_MONTH:
-                escalaDeTiempo = 60;
                 tituloGrafico[0] = "DIA: " + obtenerNombreDia(fechaCal.getTime());
-                ;
                 break;
 
         }
 
         final GestorDispositivos gestionDis = GestorDispositivos.getInstance(context);
-        Calendar inicio = getInicioIntervaloTiempo(fechaCal, campo);
-        Log.i("fecha inicio", inicio.toString());
-        Calendar fin = getFinIntervaloTiempo(fechaCal, campo);
-        Log.i("fecha fin", fin.toString());
+
+        Calendar inicio = (Calendar) fechaCal.clone();
+        inicio = configurarInicioFecha(inicio, tipo);
+        //Log.i("fecha inicio", inicio.getTime().toString());
+
+        Calendar fin = (Calendar) fechaCal.clone();
+        fin = configurarFinFecha(fin, tipo);
+        //Log.i("fecha fin", fin.getTime().toString());
 
         TareaList nuevaTarea = new TareaList() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -169,9 +154,12 @@ public class GestorConsumo {
                 //listaFeedField.addAll(listaFF);
                 //Toast.makeText(getApplicationContext(), "listaFeedField: "+listaFeedField.toString(), Toast.LENGTH_LONG).show();
 
+                Log.i("unaTareaList", String.valueOf(listaFF));
+
                 float limiteConsumo = 0;
-                List<GraficaBarrras.ValorLabel> listavalores = obtenerListaValorLabel(listaFeedField, tipo);
+                List<GraficaBarrras.ValorLabel> listavalores = obtenerListaValorLabel(listaFF, tipo);
                 limiteConsumo = (float) calcularLimiteCondumo(listavalores);
+                Log.i("unaTareaList", String.valueOf(listaFF));
 
                 gbarras.setLimiteConsumo(limiteConsumo);
                 gbarras.setListaValorLabel(listavalores);
@@ -184,13 +172,11 @@ public class GestorConsumo {
                 //float promedio = limiteConsumo;
                 boolean isdeterUsuario = GestorConsumo.getInstance(context).esConsumoDiarioDeterminadoPorUsuario();
                 double promedioDeter = 0;
-                if (isdeterUsuario) {
+                if (isdeterUsuario && tipo == Calendar.DAY_OF_MONTH) {
                     //obtener consumo determinado por el usuario en configuraciones de la app
                     promedioDeter = GestorConsumo.getInstance(context).obtenerLimiteConsumoDiarioDeterminadoPorUsuario();
                     actualizarDetallesDispositivosHolder(holder, (float) promedioDeter,sumaTotal);
-
                 } else {
-
                     // holder.pbar_consumoTotal.setsetMax((int)limiteConsumo);
                     TareaFloat unaTareaF = new TareaFloat() {
 
@@ -245,14 +231,9 @@ public class GestorConsumo {
                 holder.pbar_consumoTotal.getProgressDrawable().setBounds(bounds);
             }
 
-            //revend
-            @Override
-            public List getList() {
-                return listaFeedField;
-            }
         };
 
-        gestionDis.solicitarValoresDeField(dispositivo.getApi_key_write(), GestorDispositivos.VALUE_FIELD_NUMBER, dispositivo.getId(), inicio, fin, "" + escalaDeTiempo, nuevaTarea);
+        gestionDis.solicitarValoresDeField(GestorDispositivos.VALUE_FIELD_NUMBER, dispositivo.getId(), inicio, fin, tipo, nuevaTarea);
     }
 
     private String obtenerConsumoFormateado(float consumo_watts) {
@@ -348,84 +329,23 @@ public class GestorConsumo {
     public void obtenerConsumoPromedio(final int tipo, final Dispositivo dispositivo, final TareaFloat tareaF, Calendar fechaFin) {
         final List<FeedField> listaFeedFields = new ArrayList();
         TareaList unaTarea = null;
-        String escala = "10";
         Calendar fechaInicio = (Calendar) fechaFin.clone();
         //fechaInicio.setTime(fechaFin.getTime());
-        switch (tipo) {
-            case Calendar.DAY_OF_MONTH:
-            case Calendar.MONTH:
-                escala = "1440";
-                fechaFin.add(Calendar.MONTH, -1);
-                fechaFin = configurarFinFecha(fechaFin, tipo);
-                fechaInicio.add(Calendar.MONTH, -NUM_MESES_OPROMEDIO);
-                fechaInicio = configurarInicioFecha(fechaInicio, tipo);
-                break;
-            case Calendar.HOUR_OF_DAY:
-                escala = "60";
-                fechaFin.add(Calendar.MONTH, -1);
-                fechaFin = configurarFinFecha(fechaFin, tipo);
-                fechaInicio.add(Calendar.MONTH, -NUM_MESES_OPROMEDIO);
-                fechaInicio = configurarInicioFecha(fechaInicio, tipo);
-                break;
-        }
+        fechaFin.add(Calendar.MONTH, -1);
+        fechaFin = configurarFinFecha(fechaFin, tipo);
+        fechaInicio.add(Calendar.MONTH, -NUM_MESES_OPROMEDIO);
+        fechaInicio = configurarInicioFecha(fechaInicio, tipo);
 
         unaTarea = new TareaList() {
             @Override
             public void ejecutar(ArrayList<FeedField> listaFeedField) {
                 tareaF.ejecutar(promediar(listaFeedField, tipo));
             }
-
-            @Override
-            public List getList() {
-                return listaFeedFields;
-            }
         };
 
         GestorDispositivos.getInstance(context).solicitarValoresDeField(
-                dispositivo.getApi_key_write(), GestorDispositivos.VALUE_FIELD_NUMBER, dispositivo.getId(),
-                fechaInicio, fechaFin, escala, unaTarea);
-    }
-
-    public static Calendar configurarInicioFecha(Calendar fecha, int tipo) {
-        switch (tipo) {
-            case Calendar.YEAR:
-                fecha.set(Calendar.MONTH, 0);
-            case Calendar.MONTH:
-                fecha.set(Calendar.DAY_OF_MONTH, 1);
-            case Calendar.DAY_OF_MONTH:
-                fecha.set(Calendar.HOUR_OF_DAY, 0);
-            case Calendar.HOUR_OF_DAY:
-                fecha.set(Calendar.MINUTE, 0);
-            default:
-                fecha.set(Calendar.SECOND, 0);
-                fecha.set(Calendar.MILLISECOND, 1);
-        }
-        return fecha;
-    }
-
-    /**
-     * linpia la fecha a partir de un campo dentro de una fecha definida po tipo
-     *
-     * @param fecha
-     * @param tipo
-     * @return
-     */
-    public static Calendar configurarFinFecha(Calendar fecha, int tipo) {
-        switch (tipo) {
-            case Calendar.YEAR:
-                fecha.set(Calendar.MONTH, fecha.getActualMaximum(Calendar.MONTH));
-            case Calendar.MONTH:
-                fecha.set(Calendar.DAY_OF_MONTH, fecha.getActualMaximum(Calendar.DAY_OF_MONTH));
-            case Calendar.DAY_OF_MONTH:
-                fecha.set(Calendar.HOUR_OF_DAY, 23);
-            case Calendar.HOUR_OF_DAY:
-                fecha.set(Calendar.MINUTE, 59);
-            default:
-                fecha.set(Calendar.SECOND, 59);
-                fecha.set(Calendar.MILLISECOND, 0);
-        }
-
-        return fecha;
+                GestorDispositivos.VALUE_FIELD_NUMBER, dispositivo.getId(),
+                fechaInicio, fechaFin, tipo, unaTarea);
     }
 
     /**

@@ -52,7 +52,6 @@
                 android:layout_marginBottom="@dimen/dimension_pequena"
                 app:layout_anchor="@+id/item_detail_container"
                 android:layout_marginRight="100dp"
-
                 android:layout_height="28dp"
                 android:layout_gravity="end|bottom" />
 

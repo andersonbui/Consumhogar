@@ -56,9 +56,9 @@ public class GestorFeedField {
         }
 
         ArrayList<GraficaBarrras.ValorLabel> lista = new ArrayList<>();
+        DateFormat df = new SimpleDateFormat(formato);
         for (FeedField item: listaFF) {
             float valor = item.getValor().floatValue();
-            DateFormat df = new SimpleDateFormat(formato);
             String label = df.format(item.getFecha());
             GraficaBarrras.ValorLabel unV = new GraficaBarrras.ValorLabel(valor,label);
             lista.add(unV);

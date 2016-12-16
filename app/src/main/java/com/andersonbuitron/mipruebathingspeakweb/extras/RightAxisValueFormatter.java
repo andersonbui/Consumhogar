@@ -11,7 +11,7 @@ public class RightAxisValueFormatter implements YAxisValueFormatter
     private DecimalFormat mFormat;
 
     public RightAxisValueFormatter() {
-        mFormat = new DecimalFormat("###,###,###,##0.0");
+        mFormat = new DecimalFormat("###,###,###,##0.00");
     }
 
     @Override

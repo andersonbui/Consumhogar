@@ -23,8 +23,8 @@ import com.andersonbuitron.mipruebathingspeakweb.R;
 import com.andersonbuitron.mipruebathingspeakweb.adaptadores.DispositivoAdapter;
 import com.andersonbuitron.mipruebathingspeakweb.callbacks.TareaString;
 import com.andersonbuitron.mipruebathingspeakweb.extras.ModoDetalle;
+import com.andersonbuitron.mipruebathingspeakweb.fragments.DetallesDispositivoFragment;
 import com.andersonbuitron.mipruebathingspeakweb.fragments.DispositivosFragment;
-import com.andersonbuitron.mipruebathingspeakweb.fragments.ItemDetailFragment;
 import com.andersonbuitron.mipruebathingspeakweb.gestores.GestorDispositivos;
 import com.andersonbuitron.mipruebathingspeakweb.modelos.Dispositivo;
 
@@ -36,9 +36,6 @@ import java.util.Calendar;
  * item details are presented side-by-side with a list of items
  * in a {@link //ItemListActivity}.
  */
-
-//public class DetalleDispositivoActivity extends AppCompatActivity implements
-//        ConsumoMesFragment.OnFragmentInteractionListener,ConsumoHoraFragment.OnFragmentInteractionListener{
 
 public class DetalleDispositivoActivity extends AppCompatActivity {
 
@@ -64,6 +61,7 @@ public class DetalleDispositivoActivity extends AppCompatActivity {
 
         toolbar.setTitle(unDispositivo.getNombre());
         setSupportActionBar(toolbar);
+
         //rev
         iv_reg_icono = (ImageView)findViewById(R.id.iv_icono);
 
@@ -103,7 +101,7 @@ public class DetalleDispositivoActivity extends AppCompatActivity {
         //
 
         ModoDetalle.modo = Calendar.MONTH;
-        Fragment fragment = ItemDetailFragment.newInstance(unDispositivo);
+        Fragment fragment = DetallesDispositivoFragment.newInstance(unDispositivo);
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.contenedor_tipo_consumo, fragment).
                 commit();
@@ -204,13 +202,13 @@ public class DetalleDispositivoActivity extends AppCompatActivity {
             switch (id) {
                 case R.id.btn_get_consumo_diario:
                     ModoDetalle.modo = Calendar.MONTH;
-                    fragment = ItemDetailFragment.newInstance(unDispositivo);
+                    fragment = DetallesDispositivoFragment.newInstance(unDispositivo);
                     fragmentoSeleccionado = true;
                     break;
 
                 case R.id.btn_get_consumo_hora:
                     ModoDetalle.modo = Calendar.DAY_OF_MONTH;
-                    fragment = ItemDetailFragment.newInstance(unDispositivo);
+                    fragment = DetallesDispositivoFragment.newInstance(unDispositivo);
                     fragmentoSeleccionado = true;
                     break;
 
@@ -224,7 +222,6 @@ public class DetalleDispositivoActivity extends AppCompatActivity {
                         commit();
             }
         }
-
 
     public static void actualizarCompoundButton(final CompoundButton compoundButtonSwitch, String idChannel, int field, final Context context) {
         GestorDispositivos gestionDis = GestorDispositivos.getInstance(context);

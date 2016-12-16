@@ -28,7 +28,7 @@ import static com.andersonbuitron.mipruebathingspeakweb.activities.DetalleDispos
  * in two-pane mode (on tablets) or a {@link //DetalleDispositivoActivity}
  * on handsets.
  */
-public class ItemDetailFragment extends Fragment {
+public class DetallesDispositivoFragment extends Fragment {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -53,12 +53,12 @@ public class ItemDetailFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ItemDetailFragment() {
+    public DetallesDispositivoFragment() {
 
     }
 
-    public static ItemDetailFragment newInstance(Dispositivo param1) {
-        ItemDetailFragment fragment = new ItemDetailFragment();
+    public static DetallesDispositivoFragment newInstance(Dispositivo param1) {
+        DetallesDispositivoFragment fragment = new DetallesDispositivoFragment();
         Bundle args = new Bundle();
         Log.i( "Dispositivo llegado","dispositivo llegado: "+param1.getId());
         args.putSerializable(ARG_ITEM_DISPOSITIVO, param1);
@@ -158,7 +158,7 @@ public class ItemDetailFragment extends Fragment {
 
             //Log.i("Calendar","posicion["+(posicionDerIzq)+"]"+" fecha ["+ fechaDetalle.getTime().toString()+"]");
             //Toast.makeText(DetalleDispositivoActivity.this, "item: "+mPager.getCurrentItem(), Toast.LENGTH_SHORT).show();
-            return ConsumoMesFragment.newInstance(unDispositivo, (Calendar) fechaDetalle.clone(),posicionDerIzq);
+            return ConsumoDetallesFragment.newInstance(unDispositivo, (Calendar) fechaDetalle.clone(),posicionDerIzq);
 
         }
 
